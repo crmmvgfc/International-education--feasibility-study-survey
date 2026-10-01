@@ -72,9 +72,51 @@ p.lead{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:18px}
 footer{position:relative;z-index:2;text-align:center;font-size:11px;color:var(--muted);padding:0 20px 24px}
 canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 @media(max-width:560px){.options{grid-template-columns:1fr}.stage{padding:24px 18px}.brand h1{font-size:12px}}
+
+/* ========= SOURCE LANDING PAGE ========= */
+#sourceLanding{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:radial-gradient(1200px 600px at 10% -10%,#c8e6c9 0,transparent 60%),radial-gradient(900px 500px at 100% 110%,#fff3c4 0,transparent 55%),#f4faf4;overflow:auto}
+#sourceLanding.hidden{display:none}
+.source-card{width:min(680px,100%);background:#fff;border:1px solid #e2efe2;border-radius:20px;padding:34px 30px;box-shadow:0 18px 50px rgba(27,94,32,.16);text-align:center}
+.source-logo-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px}
+.source-logo{width:48px;height:48px;border-radius:12px;background:#fff;border:1px solid #d7e8d8;display:grid;place-items:center;overflow:hidden}
+.source-logo img{width:100%;height:100%;object-fit:contain}
+.source-chip{display:inline-block;background:#E8F5E9;color:#1B5E20;font-weight:700;font-size:12px;padding:6px 13px;border-radius:99px;margin-bottom:13px}
+.source-card h2{font-size:clamp(23px,4vw,30px);margin-bottom:9px}
+.source-card p{color:#5f6f62;font-size:14px;line-height:1.7;margin:0 auto 22px;max-width:560px}
+.source-options{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;text-align:left}
+.source-option{font:inherit;font-size:14px;font-weight:600;color:#1d2b1f;background:#fff;border:2px solid #dcebdc;border-radius:14px;padding:14px 15px;cursor:pointer;transition:.18s}
+.source-option:hover{border-color:#66BB6A;transform:translateY(-2px);box-shadow:0 8px 18px rgba(46,125,50,.12)}
+.source-option.selected{background:linear-gradient(135deg,#2E7D32,#1B5E20);border-color:#1B5E20;color:#fff}
+.source-continue{width:100%;margin-top:16px;font:inherit;font-weight:700;font-size:14px;border:0;border-radius:14px;padding:13px 22px;background:#dcebdc;color:#78907b;cursor:not-allowed;transition:.2s}
+.source-continue.ready{background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;cursor:pointer;box-shadow:0 8px 18px rgba(27,94,32,.25)}
+.source-note{font-size:10px!important;margin-top:14px!important;margin-bottom:0!important}
+@media(max-width:560px){.source-options{grid-template-columns:1fr}.source-card{padding:27px 19px}}
+
 </style>
 </head>
 <body>
+
+<div id="sourceLanding">
+  <div class="source-card">
+    <div class="source-logo-row">
+      <div class="source-logo"><img src="assets/mvgfclogo.png" alt="MVGFC" onerror="this.replaceWith('MVGFC')"></div>
+      <div class="source-logo"><img src="assets/bace-white.png" alt="BAC" onerror="this.replaceWith('BAC')"></div>
+    </div>
+    <span class="source-chip">Before you begin</span>
+    <h2>How did you find this survey?</h2>
+    <p>Please select the option that best describes where you first received or discovered the survey link.</p>
+    <div class="source-options">
+      <button class="source-option" data-source="Facebook">Facebook</button>
+      <button class="source-option" data-source="Friend">A friend</button>
+      <button class="source-option" data-source="LinkedIn">LinkedIn</button>
+      <button class="source-option" data-source="HubSpot">HubSpot</button>
+      <button class="source-option" data-source="Text message">Text message</button>
+    </div>
+    <button class="source-continue" id="sourceContinue" disabled>Continue to survey →</button>
+    <p class="source-note">Your selection is recorded together with your survey response.</p>
+  </div>
+</div>
+
 <div class="cloud">☁️</div><div class="cloud">☁️</div><div class="cloud">☁️</div>
 
 <header>
@@ -95,6 +137,40 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 <canvas id="confetti"></canvas>
 
 <script>
+
+/* ========= SOURCE ATTRIBUTION ========= */
+const SOURCE_STORAGE_KEY = 'mvgfc_bac_source';
+let SURVEY_SOURCE = sessionStorage.getItem(SOURCE_STORAGE_KEY) || '';
+const sourceLanding = document.getElementById('sourceLanding');
+const sourceContinue = document.getElementById('sourceContinue');
+let selectedSource = SURVEY_SOURCE;
+
+function showSourceLanding(){
+  sourceLanding.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.source-option').forEach(btn=>btn.classList.toggle('selected',btn.dataset.source===selectedSource));
+  sourceContinue.disabled=!selectedSource;
+  sourceContinue.classList.toggle('ready',!!selectedSource);
+}
+function hideSourceLanding(){
+  sourceLanding.classList.add('hidden');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.source-option').forEach(btn=>btn.addEventListener('click',()=>{
+  selectedSource=btn.dataset.source;
+  document.querySelectorAll('.source-option').forEach(b=>b.classList.toggle('selected',b===btn));
+  sourceContinue.disabled=false;
+  sourceContinue.classList.add('ready');
+}));
+sourceContinue.addEventListener('click',()=>{
+  if(!selectedSource)return;
+  SURVEY_SOURCE=selectedSource;
+  sessionStorage.setItem(SOURCE_STORAGE_KEY,SURVEY_SOURCE);
+  hideSourceLanding();
+});
+
+if(SURVEY_SOURCE){hideSourceLanding();}else{showSourceLanding();}
+
 /* ========= CONFIG ========= */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwulvjzaYkyRSfVjeta2h5LZxP3ykjMcEkfsk7H5GzSdH-sc7bpYP5Kzg5hVCrT8py-5Q/exec';
 
@@ -224,7 +300,7 @@ document.addEventListener('keydown',e=>{
 
 /* ========= SUBMIT ========= */
 function payload(){
-  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent};
+  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent,source:SURVEY_SOURCE||'Unknown'};
   Q.forEach(q=>{const a=S.a[q.n];d['q'+q.n]=a?(a.spec?`${a.label}: ${a.spec.trim()}`:a.label):''});
   return d;
 }
@@ -245,7 +321,7 @@ async function flushQueue(){
   localStorage.setItem('mvgfc_bac_queue',JSON.stringify(left));
 }
 window.addEventListener('online',flushQueue);flushQueue();
-function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();render(-1)}
+function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
 
 /* ========= CONFETTI ========= */
 function burst(){

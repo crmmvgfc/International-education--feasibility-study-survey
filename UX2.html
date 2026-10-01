@@ -482,9 +482,51 @@ canvas#confetti {
   .tracker-container { padding: 0 20px; }
   main { padding: 0 20px; }
 }
+
+/* ========= SOURCE LANDING PAGE ========= */
+#sourceLanding{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:20px;background:radial-gradient(1000px 500px at 50% 0%,#e1f3eb 0%,#f1f7f4 100%);overflow:auto}
+#sourceLanding.hidden{display:none}
+.source-card{width:min(620px,100%);background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:30px 26px;box-shadow:0 12px 32px -8px rgba(4,82,56,.12),0 4px 12px -2px rgba(0,0,0,.03);text-align:center}
+.source-logo-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:19px}
+.source-logo{width:44px;height:44px;border-radius:10px;background:#fff;border:1.5px solid #a7f3d0;display:grid;place-items:center;overflow:hidden}
+.source-logo img{width:100%;height:100%;object-fit:contain}
+.source-chip{display:inline-block;background:#e8f5f0;color:#045238;font-weight:800;font-size:10px;padding:6px 11px;border-radius:99px;margin-bottom:11px}
+.source-card h2{font-size:clamp(22px,4vw,28px);font-weight:800;line-height:1.2;margin-bottom:8px}
+.source-card p{color:#64748b;font-size:13px;line-height:1.65;margin:0 auto 20px;max-width:530px}
+.source-options{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;text-align:left}
+.source-option{font:inherit;font-size:13px;font-weight:700;color:#0f172a;background:#fff;border:1.5px solid #e2e8f0;border-radius:14px;padding:13px;cursor:pointer;transition:.2s}
+.source-option:hover{border-color:#a7f3d0;transform:translateY(-2px);box-shadow:0 16px 36px -6px rgba(4,82,56,.12)}
+.source-option.selected{border-color:#045238;background:#e8f5f0;box-shadow:0 0 0 2px rgba(4,82,56,.07)}
+.source-continue{width:100%;margin-top:14px;font:inherit;font-weight:800;font-size:13px;border:0;border-radius:14px;padding:13px 20px;background:#e2e8f0;color:#94a3b8;cursor:not-allowed;transition:.2s}
+.source-continue.ready{background:linear-gradient(135deg,#045238,#023826);color:#fff;cursor:pointer;box-shadow:0 7px 18px rgba(4,82,56,.2)}
+.source-note{font-size:9px!important;color:#94a3b8!important;margin:11px 0 0!important}
+@media(max-width:500px){.source-options{grid-template-columns:1fr}.source-card{padding:25px 18px}}
+
 </style>
 </head>
 <body>
+
+<div id="sourceLanding">
+  <div class="source-card">
+    <div class="source-logo-row">
+      <div class="source-logo"><img src="assets/mvgfclogo.png" alt="MVGFC" onerror="this.replaceWith('MVGFC')"></div>
+      <div class="source-logo"><img src="assets/bace-white.png" alt="BAC" onerror="this.replaceWith('BAC')"></div>
+    </div>
+    <span class="source-chip">Before you begin</span>
+    <h2>How did you find this survey?</h2>
+    <p>Please select the option that best describes where you first received or discovered the survey link.</p>
+    <div class="source-options">
+      <button class="source-option" data-source="Facebook">Facebook</button>
+      <button class="source-option" data-source="Friend">A friend</button>
+      <button class="source-option" data-source="LinkedIn">LinkedIn</button>
+      <button class="source-option" data-source="HubSpot">HubSpot</button>
+      <button class="source-option" data-source="Text message">Text message</button>
+    </div>
+    <button class="source-continue" id="sourceContinue" disabled>Continue to survey →</button>
+    <p class="source-note">Your selection is recorded together with your survey response.</p>
+  </div>
+</div>
+
 
 <header>
   <div class="header-inner">
@@ -524,6 +566,40 @@ canvas#confetti {
 <canvas id="confetti"></canvas>
 
 <script>
+
+/* ========= SOURCE ATTRIBUTION ========= */
+const SOURCE_STORAGE_KEY = 'mvgfc_bac_source';
+let SURVEY_SOURCE = sessionStorage.getItem(SOURCE_STORAGE_KEY) || '';
+const sourceLanding = document.getElementById('sourceLanding');
+const sourceContinue = document.getElementById('sourceContinue');
+let selectedSource = SURVEY_SOURCE;
+
+function showSourceLanding(){
+  sourceLanding.classList.remove('hidden');
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.source-option').forEach(btn=>btn.classList.toggle('selected',btn.dataset.source===selectedSource));
+  sourceContinue.disabled=!selectedSource;
+  sourceContinue.classList.toggle('ready',!!selectedSource);
+}
+function hideSourceLanding(){
+  sourceLanding.classList.add('hidden');
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.source-option').forEach(btn=>btn.addEventListener('click',()=>{
+  selectedSource=btn.dataset.source;
+  document.querySelectorAll('.source-option').forEach(b=>b.classList.toggle('selected',b===btn));
+  sourceContinue.disabled=false;
+  sourceContinue.classList.add('ready');
+}));
+sourceContinue.addEventListener('click',()=>{
+  if(!selectedSource)return;
+  SURVEY_SOURCE=selectedSource;
+  sessionStorage.setItem(SOURCE_STORAGE_KEY,SURVEY_SOURCE);
+  hideSourceLanding();
+});
+
+if(SURVEY_SOURCE){hideSourceLanding();}else{showSourceLanding();}
+
 /* ========= CONFIG ========= */
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwulvjzaYkyRSfVjeta2h5LZxP3ykjMcEkfsk7H5GzSdH-sc7bpYP5Kzg5hVCrT8py-5Q/exec';
 
@@ -720,7 +796,7 @@ document.addEventListener('keydown',e=>{
 
 /* ========= SUBMIT ========= */
 function payload(){
-  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent};
+  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent,source:SURVEY_SOURCE||'Unknown'};
   Q.forEach(q=>{const a=S.a[q.n];d['q'+q.n]=a?(a.spec?`${a.label}: ${a.spec.trim()}`:a.label):''});
   return d;
 }
@@ -745,7 +821,7 @@ async function flushQueue(){
 }
 
 window.addEventListener('online',flushQueue);flushQueue();
-function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();render(-1)}
+function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
 
 /* ========= CONFETTI ========= */
 function burst(){
