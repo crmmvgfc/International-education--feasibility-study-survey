@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MVGFC × BAC Malaysia | Feasibility Survey</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --emerald-primary: #045238;
+  --emerald-dark: #023826;
+  --emerald-light: #e8f5f0;
+  --emerald-accent: #10b981;
+  --amber-gold: #f59e0b;
+  --amber-soft: #fffbeeb0;
+  --ink-main: #0f172a;
+  --ink-muted: #64748b;
+  --bg-page: #f1f7f4;
+  --bg-card: #ffffff;
+  --border-light: #e2e8f0;
+  --border-emerald: #a7f3d0;
+  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-md: 10px;
+  --shadow-card: 0 12px 32px -8px rgba(4, 82, 56, 0.08), 0 4px 12px -2px rgba(0, 0, 0, 0.03);
+  --shadow-hover: 0 16px 36px -6px rgba(4, 82, 56, 0.16), 0 6px 16px -2px rgba(4, 82, 56, 0.08);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  color: var(--ink-main);
+  background: radial-gradient(1000px 500px at 50% 0%, #e1f3eb 0%, var(--bg-page) 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========= HEADER ========= */
+header {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(4, 82, 56, 0.1);
+  padding: 14px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.header-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--bg-card);
+  border: 1.5px solid var(--border-emerald);
+  display: grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--emerald-primary);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(4, 82, 56, 0.08);
+  flex-shrink: 0;
+}
+
+.logo-badge img { width: 100%; height: 100%; object-fit: contain; }
+
+.brand-titles h1 { font-size: 14px; font-weight: 800; color: var(--emerald-dark); line-height: 1.25; }
+.brand-titles small { font-weight: 600; color: var(--ink-muted); font-size: 11px; display: block; }
+
+/* ========= STEPPER & PROGRESS ========= */
+.tracker-container {
+  max-width: 820px;
+  width: 100%;
+  margin: 20px auto 0;
+  padding: 0 24px;
+}
+
+.stepper-nodes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.stepper-node {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #cbd5e1;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.stepper-node.active {
+  background: var(--emerald-primary);
+  transform: scale(1.15);
+  box-shadow: 0 0 0 4px var(--emerald-light);
+}
+
+.stepper-node.done {
+  background: var(--emerald-accent);
+}
+
+.tracker-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--emerald-primary);
+  margin-bottom: 8px;
+}
+
+.progress-track {
+  height: 8px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--emerald-primary), var(--emerald-accent));
+  border-radius: 99px;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ========= MAIN CARD & STAGE ========= */
+main {
+  flex: 1;
+  max-width: 820px;
+  width: 100%;
+  margin: 16px auto 40px;
+  padding: 0 24px;
+}
+
+.stage {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  border: 1px solid rgba(4, 82, 56, 0.08);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+}
+
+.stage.fwd { animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+.stage.back { animation: slideInLeft 0.35s cubic-bezier(0.16, 1, 0.3, 1); }
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.section-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--emerald-light);
+  color: var(--emerald-primary);
+  font-weight: 700;
+  font-size: 12px;
+  padding: 6px 14px;
+  border-radius: 99px;
+  margin-bottom: 16px;
+  border: 1px solid var(--border-emerald);
+}
+
+h2 {
+  font-size: clamp(20px, 3.5vw, 24px);
+  font-weight: 800;
+  color: var(--ink-main);
+  line-height: 1.35;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+}
+
+p.lead {
+  color: var(--ink-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ========= PRIVACY BOX ========= */
+.privacy-box {
+  background: #f8faf9;
+  border: 1px solid #d1e7dd;
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.privacy-list {
+  list-style: none;
+  display: grid;
+  gap: 12px;
+}
+
+.privacy-list li {
+  font-size: 13px;
+  line-height: 1.55;
+  color: #334155;
+  position: relative;
+  padding-left: 20px;
+}
+
+.privacy-list li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--emerald-accent);
+  font-weight: 800;
+}
+
+.check-consent {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: var(--emerald-light);
+  padding: 16px;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--emerald-dark);
+  line-height: 1.5;
+  border: 1px solid var(--border-emerald);
+  transition: transform 0.15s ease;
+}
+
+.check-consent:hover { transform: translateY(-1px); }
+
+.check-consent input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--emerald-primary);
+  margin-top: 2px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ========= OPTION CARDS ========= */
+.options-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.opt-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-main);
+  background: var(--bg-card);
+  border: 2px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+}
+
+.opt-card:hover {
+  border-color: var(--emerald-accent);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+  background: #fafdfc;
+}
+
+.opt-card.sel {
+  border-color: var(--emerald-primary);
+  background: var(--emerald-light);
+  color: var(--emerald-dark);
+  font-weight: 700;
+  box-shadow: 0 0 0 2px var(--emerald-primary);
+}
+
+.opt-card .label-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-right: 8px;
+}
+
+.opt-card .radio-indicator {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #cbd5e1;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.opt-card.sel .radio-indicator {
+  border-color: var(--emerald-primary);
+  background: var(--emerald-primary);
+}
+
+.opt-card.sel .radio-indicator::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.opt-card kbd {
+  font-size: 11px;
+  color: #94a3b8;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.opt-card.sel kbd {
+  color: var(--emerald-primary);
+  background: #ffffff;
+  border-color: var(--border-emerald);
+}
+
+.opt-card.wide { grid-column: 1 / -1; }
+
+.spec-input {
+  width: 100%;
+  margin-top: 16px;
+  padding: 14px 18px;
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--emerald-accent);
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ========= NAVIGATION BAR ========= */
+.nav-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-light);
+}
+
+.btn {
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn.primary {
+  background: linear-gradient(135deg, var(--emerald-primary), var(--emerald-dark));
+  color: #ffffff;
+  box-shadow: 0 4px 14px rgba(4, 82, 56, 0.25);
+}
+
+.btn.primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(4, 82, 56, 0.35);
+}
+
+.btn.primary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.btn.ghost {
+  background: #f1f5f9;
+  color: var(--ink-muted);
+}
+
+.btn.ghost:hover {
+  background: #e2e8f0;
+  color: var(--ink-main);
+}
+
+footer {
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-muted);
+  padding: 0 24px 32px;
+}
+
+canvas#confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ========= TOAST NOTIFICATION ========= */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--emerald-dark);
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+  z-index: 50;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 640px) {
+  .options-grid { grid-template-columns: 1fr; }
+  .stage { padding: 24px 20px; }
+  .brand-titles h1 { font-size: 13px; }
+  .tracker-container { padding: 0 20px; }
+  main { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand-wrapper">
+      <div class="logo-badge"><img src="assets/mvgfclogo.png" alt="MVGFC" onerror="this.replaceWith('MVGFC')"></div>
+      <div class="brand-titles">
+        <h1>Manuel V. Gallego Foundation Colleges</h1>
+        <small>International Linkages & Feasibility Study</small>
+      </div>
+    </div>
+    <div class="logo-badge"><img src="assets/bace-white.png" alt="BAC" onerror="this.replaceWith('BAC')"></div>
+  </div>
+</header>
+
+<div class="tracker-container">
+  <div class="stepper-nodes">
+    <div class="stepper-node" id="node-1">1</div>
+    <div class="stepper-node" id="node-2">2</div>
+    <div class="stepper-node" id="node-3">3</div>
+    <div class="stepper-node" id="node-4">4</div>
+    <div class="stepper-node" id="node-5">5</div>
+  </div>
+  <div class="tracker-meta">
+    <span id="step-category">Welcome</span>
+    <span id="count">0% Completed</span>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="fill"></div></div>
+</div>
+
+<main><section class="stage" id="stage"></section></main>
+
+<footer>
+  © Manuel V. Gallego Foundation Colleges, Inc. · Compliant with Philippine Data Privacy Act of 2012 (RA 10173)
+</footer>
+
+<div class="toast" id="toast"><span>✓</span> Answer saved</div>
+<canvas id="confetti"></canvas>
+
+<script>
+/* ========= CONFIG ========= */
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwulvjzaYkyRSfVjeta2h5LZxP3ykjMcEkfsk7H5GzSdH-sc7bpYP5Kzg5hVCrT8py-5Q/exec';
+
+/* ========= DATA ========= */
+const parts=[
+ {id:1,tag:'Part 1 of 5',title:'Professional Profile',blurb:'Let’s start with a few brief background details.'},
+ {id:2,tag:'Part 2 of 5',title:'Interest in International Education',blurb:'How do you feel about studying with an international perspective?'},
+ {id:3,tag:'Part 3 of 5',title:'Program & Study Preferences',blurb:'Select your preferred route: program type, field, and modality.'},
+ {id:4,tag:'Part 4 of 5',title:'Affordability & Financial Options',blurb:'Help us identify fee structures that fit your expectations.'},
+ {id:5,tag:'Part 5 of 5',title:'Enrollment Intent & Acceptance',blurb:'Final step! Just two final questions.'}
+];
+
+const Q=[
+ {p:1,t:'Current or most recent educational level',o:[['Bachelor Degree'],['Master’s Degree'],['Master’s Degree with earned units',1],['Doctorate Degree'],['Doctoral Degree with earned units',1],['Others',1]]},
+ {p:1,t:'Current employment status',o:[['Employed Full-time'],['Employed Part-time'],['Self-employed'],['Unemployed'],['Others',1]]},
+ {p:1,t:'Type of institution where you are employed',o:[['Government Institution'],['Private Institution'],['Others',1]]},
+ {p:1,t:'In which region of the Philippines do you currently reside?',o:[['NCR - National Capital Region'],['CAR - Cordillera Administrative Region'],['Region I – Ilocos Region'],['Region II – Cagayan Valley'],['Region III – Central Luzon'],['Region IV-A – CALABARZON'],['MIMAROPA Region'],['Region V – Bicol Region'],['Region VI – Western Visayas'],['Region VII – Central Visayas'],['Region VIII – Eastern Visayas'],['Region IX – Zamboanga Peninsula'],['Region X – Northern Mindanao'],['Region XI – Davao Region'],['Region XII – SOCCSKSARGEN'],['Region XIII – Caraga'],['BARMM'],['Outside the Philippines']]},
+ {p:1,t:'Current monthly income range',o:[['Below ₱20,000'],['₱20,000–₱39,999'],['₱40,000–₱59,999'],['₱60,000–₱99,999'],['₱100,000 and above']]},
+ {p:2,t:'Prior to this survey, have you considered pursuing an academic program with an international institution?',o:[['Yes'],['No'],['Not yet, but I may consider it']]},
+ {p:2,t:'How interested are you in enrolling in an academic program with Brickfields Asia College (BAC), Malaysia?',o:[['Very Interested'],['Undecided / Neutral'],['Not Interested']]},
+ {p:2,t:'What would be your primary reason for considering an international program?',o:[['Internationally oriented education'],['Better career opportunities'],['Opportunity to study or gain exposure abroad'],['International academic credentials'],['Development of global skills'],['Preparation for employment abroad'],['Personal & professional growth'],['Other',1]]},
+ {p:2,t:'Which factor would MOST influence your decision to enroll?',o:[['Tuition and other fees'],['Reputation of partner institution'],['Program or course offered'],['International recognition'],['Flexible learning arrangement'],['Career opportunities'],['Scholarship or financial assistance'],['Other',1]]},
+ {p:3,t:'What type of international academic program would you be most interested in?',o:[['Diploma Program'],['Undergraduate / Bachelor’s Degree'],['Postgraduate / Master’s Degree']]},
+ {p:3,t:'Which field of study would you most likely consider?',o:[['Business and Management'],['Accounting and Finance'],['Information Technology / Computing'],['Law and Legal Studies'],['Communication / Media'],['Hospitality and Tourism'],['Education'],['Other',1]]},
+ {p:3,t:'If part of the program required academic exposure in Malaysia, would you participate?',o:[['Yes, definitely'],['Maybe / Depends'],['No']]},
+ {p:3,t:'What learning modality would be most convenient for you?',o:[['Face-to-Face'],['Fully Online'],['Hybrid / Blended'],['Weekend Classes'],['Evening Classes']]},
+ {p:3,t:'Preferred payment arrangement',o:[['Full Payment'],['Monthly Installment'],['Others',1]]},
+ {p:4,t:'What annual tuition fee range would you consider affordable?',o:[['Below ₱90,000'],['₱90,000–₱119,999'],['₱120,000–₱149,999'],['₱150,000–₱179,999'],['₱180,000 and above'],['Cannot determine without full program details']]},
+ {p:4,t:'Which financial assistance option would most encourage you to enroll?',o:[['Scholarship'],['Installment Payment Scheme'],['Tuition Discount'],['Financing Arrangement'],['Other',1]]},
+ {p:5,t:'If an international program with BAC Malaysia were offered through MVGFC at reasonable cost, how likely would you enroll?',o:[['Very Likely'],['Undecided'],['Very Unlikely']]},
+ {p:5,t:'Would you recommend this international program to friends or colleagues?',o:[['Yes'],['Maybe'],['No']]}
+].map((q,i)=>({...q,n:i+1}));
+
+/* ========= STATE ========= */
+const steps=[{t:'welcome'},{t:'consent'}];
+parts.forEach(p=>{steps.push({t:'intro',p});Q.filter(q=>q.p===p.id).forEach(q=>steps.push({t:'q',q}))});
+steps.push({t:'thanks'});
+
+let S=JSON.parse(localStorage.getItem('mvgfc_bac_survey')||'null')||{i:0,a:{},consent:false,start:Date.now()};
+if(S.i>=steps.length-1) S={i:0,a:{},consent:false,start:Date.now()};
+
+const $=id=>document.getElementById(id);
+const save=()=>localStorage.setItem('mvgfc_bac_survey',JSON.stringify(S));
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ========= RENDER ========= */
+function progress(){
+  const done=steps.slice(0,S.i).filter(s=>s.t==='q').length;
+  const pct=Math.round(done/Q.length*100);
+  $('fill').style.width=pct+'\%';$('count').textContent=`${pct}% Completed`;
+
+  const cur=steps[S.i];
+  if(cur.t==='q'){
+    $('step-category').textContent = `Part ${cur.q.p}: ${parts[cur.q.p - 1].title}`;
+    updateNodes(cur.q.p);
+  } else if(cur.t==='intro'){
+    $('step-category').textContent = cur.p.title;
+    updateNodes(cur.p.id);
+  } else {
+    $('step-category').textContent = cur.t === 'welcome' ? 'Welcome' : cur.t === 'consent' ? 'Data Privacy' : 'Thank You';
+    updateNodes(cur.t === 'thanks' ? 5 : 0);
+  }
+}
+
+function updateNodes(partNum) {
+  for(let i=1; i<=5; i++){
+    const el = $(`node-${i}`);
+    if(i < partNum) { el.className = 'stepper-node done'; el.textContent = '✓'; }
+    else if(i === partNum) { el.className = 'stepper-node active'; el.textContent = i; }
+    else { el.className = 'stepper-node'; el.textContent = i; }
+  }
+}
+
+function go(d){S.i=Math.max(0,Math.min(steps.length-1,S.i+d));save();render(d)}
+
+function render(d=1){
+  const st=$('stage'),s=steps[S.i];
+  st.className='stage';void st.offsetWidth;st.classList.add(d<0?'back':'fwd');
+  progress();
+
+  if(s.t==='welcome'){
+    st.innerHTML=`
+      <div class="section-pill">🌐 Global Academic Study</div>
+      <h2>MVGFC × BAC Malaysia Academic Program Feasibility Study</h2>
+      <p class="lead">Manuel V. Gallego Foundation Colleges, Inc. is exploring an exciting partnership with <b>Brickfields Asia College (BAC), Malaysia</b>. Help us design world-class degree programs tailored to your preferences in just <b>3 minutes</b>.</p>
+      <button class="btn primary" onclick="go(1)">Start Survey →</button>
+    `;
+  }else if(s.t==='consent'){
+    st.innerHTML=`
+      <div class="section-pill">🔒 Privacy & Consent</div>
+      <h2>Informed Consent Notice</h2>
+      <div class="privacy-box">
+        <ul class="privacy-list">
+          <li><b>Purpose:</b> Data will be used solely for institutional program development and feasibility research.</li>
+          <li><b>Confidentiality:</b> Responses are strictly confidential and presented in aggregate statistics.</li>
+          <li><b>Governance:</b> Compliant with the Philippine Data Privacy Act of 2012 (RA 10173).</li>
+        </ul>
+      </div>
+      <label class="check-consent">
+        <input type="checkbox" id="cb" ${S.consent?'checked':''}>
+        <span>I have read the privacy statement and voluntarily agree to participate in this study.</span>
+      </label>
+      <div class="nav-bar">
+        <button class="btn ghost" onclick="go(-1)">← Back</button>
+        <button class="btn primary" id="nx" ${S.consent?'':'disabled'} onclick="go(1)">Continue →</button>
+      </div>
+    `;
+    $('cb').onchange=e=>{S.consent=e.target.checked;$('nx').disabled=!S.consent;save()};
+  }else if(s.t==='intro'){
+    st.innerHTML=`
+      <div class="section-pill">${s.p.tag}</div>
+      <h2>${s.p.title}</h2>
+      <p class="lead">${s.p.blurb}</p>
+      <div class="nav-bar">
+        <button class="btn ghost" onclick="go(-1)">← Back</button>
+        <button class="btn primary" onclick="go(1)">Begin Part ${s.p.id} →</button>
+      </div>
+    `;
+  }else if(s.t==='q'){
+    const q=s.q,a=S.a[q.n]||{};
+    const last=S.i===steps.length-2;
+    st.innerHTML=`
+      <div class="section-pill">Question ${q.n} of ${Q.length}</div>
+      <h2>${esc(q.t)}</h2>
+      <div class="options-grid" role="radiogroup">
+        ${q.o.map((o,k)=>`
+          <button class="opt-card ${q.o.length%2&&k===q.o.length-1&&q.o.length>3?'wide':''} ${a.k===k?'sel':''}" role="radio" data-k="${k}">
+            <div class="label-text">
+              <span class="radio-indicator"></span>
+              <span>${esc(o[0])}</span>
+            </div>
+            ${k<9?`<kbd>${k+1}</kbd>`:''}
+          </button>
+        `).join('')}
+      </div>
+      <div id="specbox"></div>
+      <div class="nav-bar">
+        <button class="btn ghost" onclick="go(-1)">← Back</button>
+        <button class="btn primary" id="nx" onclick="next()">${last?'Submit Survey 🎉':'Next Question →'}</button>
+      </div>
+    `;
+    st.querySelectorAll('.opt-card').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+    showSpec();validate();
+  }else if(s.t==='thanks'){
+    st.innerHTML=`
+      <div class="section-pill">🎉 Success</div>
+      <h2>Thank you for your response!</h2>
+      <p class="lead">Your insights will play a major role in establishing world-class degree opportunities at MVGFC.</p>
+      <button class="btn primary" onclick="restart()">Submit another response</button>
+    `;
+    burst();
+  }
+}
+
+function showToast(){
+  const t=$('toast');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'), 1200);
+}
+
+function pick(k){
+  const q=steps[S.i].q,o=q.o[k];
+  S.a[q.n]={k,label:o[0],spec:S.a[q.n]&&S.a[q.n].k===k?S.a[q.n].spec:''};save();
+  document.querySelectorAll('.opt-card').forEach((b,i)=>b.classList.toggle('sel',i===k));
+  showToast();
+  showSpec();validate();
+  if(!o[1])setTimeout(()=>{if(steps[S.i].q===q)next()},350);
+}
+
+function showSpec(){
+  const q=steps[S.i].q,a=S.a[q.n],box=$('specbox');
+  if(a&&q.o[a.k][1]){
+    box.innerHTML=`<input class="spec-input" id="spec" placeholder="Please specify your answer..." value="${esc(a.spec||'')}">`;
+    $('spec').oninput=e=>{a.spec=e.target.value;save();validate()};$('spec').focus();
+  }else box.innerHTML='';
+}
+
+function validate(){
+  const q=steps[S.i].q,a=S.a[q.n];
+  const ok=a&&(!q.o[a.k][1]||(a.spec||'').trim());
+  $('nx').disabled=!ok;
+}
+
+function next(){
+  if($('nx').disabled)return;
+  if(S.i===steps.length-2)submit();else go(1);
+}
+
+document.addEventListener('keydown',e=>{
+  const s=steps[S.i];if(s.t!=='q'||e.target.tagName==='INPUT')return;
+  if(/^[1-9]$/.test(e.key)&&s.q.o[+e.key-1])pick(+e.key-1);
+  if(e.key==='Enter')next();
+});
+
+/* ========= SUBMIT ========= */
+function payload(){
+  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent};
+  Q.forEach(q=>{const a=S.a[q.n];d['q'+q.n]=a?(a.spec?`${a.label}: ${a.spec.trim()}`:a.label):''});
+  return d;
+}
+
+async function send(p){
+  await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
+}
+
+async function submit(){
+  $('nx').disabled=true;$('nx').textContent='Submitting...';
+  const p=payload();
+  try{await send(p)}catch(e){
+    const qd=JSON.parse(localStorage.getItem('mvgfc_bac_queue')||'[]');qd.push(p);localStorage.setItem('mvgfc_bac_queue',JSON.stringify(qd));
+  }
+  S.i=steps.length-1;S.a={};S.consent=false;localStorage.removeItem('mvgfc_bac_survey');render(1);
+}
+
+async function flushQueue(){
+  const qd=JSON.parse(localStorage.getItem('mvgfc_bac_queue')||'[]');if(!qd.length)return;
+  const left=[];for(const p of qd){try{await send(p)}catch(e){left.push(p)}}
+  localStorage.setItem('mvgfc_bac_queue',JSON.stringify(left));
+}
+
+window.addEventListener('online',flushQueue);flushQueue();
+function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();render(-1)}
+
+/* ========= CONFETTI ========= */
+function burst(){
+  const c=$('confetti'),x=c.getContext('2d');c.width=innerWidth;c.height=innerHeight;
+  const cols=['#045238','#10b981','#f59e0b','#023826','#e2e8f0'];
+  const P=Array.from({length:90},()=>({x:Math.random()*c.width,y:-20-Math.random()*c.height*.5,r:3+Math.random()*5,c:cols[Math.random()*cols.length|0],vy:2+Math.random()*3.5,vx:-1.5+Math.random()*3,a:Math.random()*6}));
+  let f=0;(function loop(){x.clearRect(0,0,c.width,c.height);P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.a+=0.06;x.fillStyle=p.c;x.save();x.translate(p.x,p.y);x.rotate(p.a);x.fillRect(-p.r,-p.r/2,p.r*2,p.r);x.restore()});if(++f<180)requestAnimationFrame(loop);else x.clearRect(0,0,c.width,c.height)})();
+}
+
+render(1);
+</script>
+</body>
+</html>
