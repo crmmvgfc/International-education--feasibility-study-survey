@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MVGFC × BAC Malaysia | International Program Survey</title>
+<title>MVGFC × BAC | International Programs Market Feasibility Survey</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -38,40 +38,57 @@ main{position:relative;z-index:2;max-width:760px;margin:18px auto 40px;padding:0
 @keyframes inR{from{opacity:0;transform:translateX(40px)}}
 @keyframes inL{from{opacity:0;transform:translateX(-40px)}}
 .chip{display:inline-block;background:var(--mint);color:var(--g1);font-weight:700;font-size:12px;padding:5px 12px;border-radius:99px;margin-bottom:14px}
-h2{font-size:clamp(20px,4vw,26px);line-height:1.3;font-weight:700;margin-bottom:8px}
-p.lead{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:18px}
+h2{font-size:clamp(19px,4vw,24px);line-height:1.35;font-weight:700;margin-bottom:8px}
+p.lead{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px}
+.hint{font-size:12px;font-weight:600;color:var(--g2);margin:0 0 4px}
 .big{font-size:72px;text-align:center;margin:6px 0;animation:bob 2.4s ease-in-out infinite}
 @keyframes bob{50%{transform:translateY(-8px)}}
 .center{text-align:center}
 .privacy{list-style:none;display:grid;gap:10px;margin:14px 0 18px}
 .privacy li{background:#f6fbf6;border-left:4px solid var(--g2);border-radius:10px;padding:10px 14px;font-size:13px;line-height:1.55}
 .privacy b{color:var(--g1)}
+.note{background:#fffaf0;border-left:4px solid var(--gold);border-radius:10px;padding:10px 14px;font-size:12.5px;line-height:1.6;color:#5a4a1a;margin:12px 0 18px;text-align:left}
 .check{display:flex;gap:12px;align-items:flex-start;background:var(--mint);padding:14px;border-radius:14px;cursor:pointer;font-size:13px;line-height:1.5}
 .check input{width:20px;height:20px;accent-color:var(--g2);flex:none;margin-top:2px}
 
+.spec-table{width:100%;border-collapse:collapse;font-size:13px;margin:6px 0 4px;text-align:left}
+.spec-table td{padding:9px 12px;border:1px solid #dcebdc;vertical-align:top;line-height:1.5}
+.spec-table td:first-child{width:34%;font-weight:700;color:var(--g1);background:#f6fbf6}
+
 .options{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:16px}
-.opt{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;font-size:14px;font-weight:500;background:#fff;border:2px solid #dcebdc;border-radius:16px;padding:14px;cursor:pointer;transition:.18s;position:relative}
+.options.one{grid-template-columns:1fr}
+.opt{display:flex;align-items:center;gap:12px;text-align:left;font:inherit;font-size:14px;font-weight:500;background:#fff;border:2px solid #dcebdc;border-radius:16px;padding:13px 14px;cursor:pointer;transition:.18s;position:relative;line-height:1.4}
 .opt:hover{border-color:var(--g3);transform:translateY(-2px);box-shadow:0 8px 18px rgba(46,125,50,.15)}
-.opt .em{font-size:24px;flex:none}
-.opt kbd{position:absolute;right:10px;top:8px;font-size:10px;color:#9bb09d;font-family:inherit;font-weight:600}
+.opt .ind{width:20px;height:20px;border:2px solid #b9d3bb;border-radius:50%;flex:none;display:grid;place-items:center;font-size:12px;font-weight:800;color:transparent}
+.opt.multi .ind{border-radius:6px}
+.opt kbd{position:absolute;right:10px;top:6px;font-size:10px;color:#9bb09d;font-family:inherit;font-weight:600}
+.opt span.tx{padding-right:14px}
 .opt.sel{background:linear-gradient(135deg,var(--g2),var(--g1));color:#fff;border-color:var(--g1);animation:pop .35s}
+.opt.sel .ind{background:#fff;border-color:#fff;color:var(--g1)}
 .opt.sel kbd{color:#cfe8d1}
-@keyframes pop{40%{transform:scale(1.04)}}
-.opt.wide{grid-column:1/-1}
+@keyframes pop{40%{transform:scale(1.03)}}
 .spec{width:100%;margin-top:12px;padding:13px 16px;border-radius:14px;border:2px solid var(--g3);font:inherit;font-size:14px;outline:none;animation:inR .3s}
 .spec:focus{box-shadow:0 0 0 4px rgba(102,187,106,.25)}
+textarea.spec{resize:vertical;min-height:110px;margin-top:16px}
+.amt{display:block;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink)}
+.amt-row{display:flex;align-items:center;gap:8px;margin-top:6px}
+.amt-row b{font-size:18px;color:var(--g1)}
+.amt-row input{flex:1;padding:12px 14px;border-radius:12px;border:2px solid var(--g3);font:inherit;font-size:15px;outline:none}
+.amt-row input:focus{box-shadow:0 0 0 4px rgba(102,187,106,.25)}
+.sub{font-size:13px;font-weight:700;color:var(--g1);margin-top:20px}
 .cheer{min-height:22px;text-align:center;margin-top:14px;font-size:13px;font-weight:600;color:var(--g2)}
 
-.nav{display:flex;justify-content:space-between;gap:12px;margin-top:22px}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:22px}
 .btn{font:inherit;font-weight:700;font-size:14px;border:none;border-radius:14px;padding:13px 26px;cursor:pointer;transition:.2s}
 .btn.primary{background:linear-gradient(135deg,var(--g2),var(--g1));color:#fff;box-shadow:0 8px 18px rgba(27,94,32,.3)}
 .btn.primary:hover:not(:disabled){transform:translateY(-2px)}
 .btn.primary:disabled{opacity:.4;cursor:not-allowed;box-shadow:none}
 .btn.ghost{background:#eef5ee;color:var(--g1)}
 .btn.gold{background:var(--gold);color:#3b2a00}
+.skip{background:none;border:0;font:inherit;font-size:12px;color:var(--muted);text-decoration:underline;cursor:pointer}
 footer{position:relative;z-index:2;text-align:center;font-size:11px;color:var(--muted);padding:0 20px 24px}
 canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
-@media(max-width:560px){.options{grid-template-columns:1fr}.stage{padding:24px 18px}.brand h1{font-size:12px}}
+@media(max-width:560px){.options{grid-template-columns:1fr}.stage{padding:24px 18px}.brand h1{font-size:12px}.nav{flex-wrap:wrap}}
 
 /* ========= SOURCE LANDING PAGE ========= */
 #sourceLanding{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;padding:24px;background:radial-gradient(1200px 600px at 10% -10%,#c8e6c9 0,transparent 60%),radial-gradient(900px 500px at 100% 110%,#fff3c4 0,transparent 55%),#f4faf4;overflow:auto}
@@ -91,7 +108,6 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 .source-continue.ready{background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;cursor:pointer;box-shadow:0 8px 18px rgba(27,94,32,.25)}
 .source-note{font-size:10px!important;margin-top:14px!important;margin-bottom:0!important}
 @media(max-width:560px){.source-options{grid-template-columns:1fr}.source-card{padding:27px 19px}}
-
 </style>
 </head>
 <body>
@@ -129,7 +145,7 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 
 <div class="track">
   <div class="track-line"><div class="track-fill" id="fill"></div><div class="plane" id="plane">✈️</div></div>
-  <div class="track-labels"><span>🇵🇭 Manila</span><span id="count"></span><span>Kuala Lumpur 🇲🇾</span></div>
+  <div class="track-labels"><span>🇵🇭 Start</span><span id="count"></span><span>Finish 🌏</span></div>
 </div>
 
 <main><section class="stage" id="stage"></section></main>
@@ -137,7 +153,6 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 <canvas id="confetti"></canvas>
 
 <script>
-
 /* ========= SOURCE ATTRIBUTION ========= */
 const SOURCE_STORAGE_KEY = 'mvgfc_bac_source';
 let SURVEY_SOURCE = sessionStorage.getItem(SOURCE_STORAGE_KEY) || '';
@@ -168,160 +183,334 @@ sourceContinue.addEventListener('click',()=>{
   sessionStorage.setItem(SOURCE_STORAGE_KEY,SURVEY_SOURCE);
   hideSourceLanding();
 });
-
 if(SURVEY_SOURCE){hideSourceLanding();}else{showSourceLanding();}
 
 /* ========= CONFIG ========= */
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwulvjzaYkyRSfVjeta2h5LZxP3ykjMcEkfsk7H5GzSdH-sc7bpYP5Kzg5hVCrT8py-5Q/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbygj9py0Kfb1rPbUowA_WB05NXXUey5ojm2jZ08QdQH_lPrzLzojRs3Pn-A1qW0AG3n0w/exec';
+const CONTACT_FORM_URL = ''; // paste the separate contact/info-session form link here
+const LS_KEY='mvgfc_bac_survey_v2', QUEUE_KEY='mvgfc_bac_queue_v2';
 
-/* ========= DATA ========= */
-const parts=[
- {id:1,tag:'Boarding Pass',emoji:'🎫',title:'Professional Profile',blurb:'Let’s check you in! A few quick details about you.'},
- {id:2,tag:'Takeoff',emoji:'🛫',title:'Interest in International Education',blurb:'How do you feel about studying with a global flair?'},
- {id:3,tag:'Flight Path',emoji:'🧭',title:'Program & Study Preferences',blurb:'Choose your route: program, field, and how you like to learn.'},
- {id:4,tag:'Fare Check',emoji:'💳',title:'Affordability & Financial Considerations',blurb:'Let’s find a ticket price that feels right.'},
- {id:5,tag:'Landing',emoji:'🛬',title:'Enrollment Intention & Market Acceptance',blurb:'Final approach! Just two more questions.'}
-];
-// option: [emoji, label, needsSpecify?]
-const Q=[
- {p:1,t:'Current or most recent educational level',o:[['🎓','Bachelor Degree'],['📘','Master’s Degree'],['📗','Master’s Degree with earned units',1],['🏛️','Doctorate Degree'],['📙','Doctoral Degree with earned units',1],['✏️','Others',1]],h:'Master’s with Earned Units'},
- {p:1,t:'Current employment status',o:[['💼','Employed Full-time'],['🕒','Employed Part-time'],['🚀','Self-employed'],['🔎','Unemployed'],['✏️','Others',1]],h:'Employment Status'},
- {p:1,t:'Type of institution where you are employed',o:[['🏛️','Government Institution'],['🏢','Private Institution'],['✏️','Others',1]],h:'Institution Type'},
- {p:1,t:'In which region of the Philippines do you currently reside?',o:[['🏙️','National Capital Region (NCR)'],['⛰️','Cordillera Administrative Region (CAR)'],['🌾','Region I – Ilocos Region'],['🌽','Region II – Cagayan Valley'],['🌻','Region III – Central Luzon'],['🌋','Region IV-A – CALABARZON'],['🏝️','MIMAROPA Region'],['🌶️','Region V – Bicol Region'],['🎭','Region VI – Western Visayas'],['🏖️','Region VII – Central Visayas'],['🌊','Region VIII – Eastern Visayas'],['🌴','Region IX – Zamboanga Peninsula'],['🍍','Region X – Northern Mindanao'],['🦅','Region XI – Davao Region'],['🥭','Region XII – SOCCSKSARGEN'],['🌅','Region XIII – Caraga'],['🕌','BARMM'],['🌏','Outside the Philippines']],h:'Region'},
- {p:1,t:'Current monthly income range',o:[['🌱','Below ₱20,000'],['🌿','₱20,000–₱39,999'],['🌳','₱40,000–₱59,999'],['🏔️','₱60,000–₱99,999'],['⭐','₱100,000 and above']],h:'Monthly Income'},
- {p:2,t:'Prior to this survey, have you considered pursuing an academic program with an international institution?',o:[['👍','Yes'],['🙅','No'],['🤔','Not yet, but I may consider it']],h:'Considered International Program'},
- {p:2,t:'How interested are you in enrolling in an academic program that provides exposure to an international institution such as Brickfields Asia College, Malaysia?',o:[['🤩','Interested'],['🤷','Not Sure / Undecided'],['😐','Not Interested']],h:'Interest in BAC'},
- {p:2,t:'What would be your primary reason for considering an international academic program?',o:[['🌐','Internationally oriented education'],['📈','Better career opportunities'],['✈️','Opportunity to study or gain exposure abroad'],['📜','International academic credentials'],['🧠','Development of global skills and competencies'],['🧳','Preparation for employment abroad'],['🌟','Personal and professional development'],['✏️','Other',1]],h:'Primary Reason'},
- {p:2,t:'Which factor would MOST influence your decision to enroll in an international academic program?',o:[['💰','Tuition and other fees'],['🏫','Reputation of the partner institution'],['📚','Program or course offered'],['🏅','International recognition of the qualification'],['🕰️','Flexible learning arrangement'],['💼','Employment and career opportunities'],['🗺️','Opportunity for overseas study or exposure'],['🎁','Scholarship or financial assistance'],['✏️','Other',1]],h:'Most Influential Factor'},
- {p:3,t:'What type of international academic program would you be most interested in?',o:[['📄','Diploma Program'],['🎓','Undergraduate / Bachelor’s Degree Program'],['🏆','Postgraduate / Master’s Degree Program']],h:'Program Type'},
- {p:3,t:'Which field of study would you most likely consider?',o:[['📊','Business and Management'],['🧮','Accounting and Finance'],['💻','Information Technology / Computing'],['⚖️','Law and Legal Studies'],['🎬','Communication / Media'],['🏨','Hospitality and Tourism'],['🍎','Education'],['✏️','Other',1]],h:'Field of Study'},
- {p:3,t:'If part of the program required study or academic exposure in Malaysia, would you be willing to participate?',o:[['🇲🇾','Yes'],['🤔','Maybe'],['🏠','No']],h:'Willing to Go to Malaysia'},
- {p:3,t:'What learning modality would be most convenient for you?',o:[['🏫','Face-to-Face'],['💻','Fully Online'],['🔀','Hybrid / Blended'],['📅','Weekend Classes'],['🌙','Evening Classes']],h:'Learning Modality'},
- {p:3,t:'Preferred payment arrangement',o:[['💵','Full Payment'],['🗓️','Monthly Installment'],['✏️','Others',1]],h:'Payment Arrangement'},
- {p:4,t:'What annual tuition and academic fee range would you consider affordable for an international academic program?',o:[['🪙','Below ₱90,000'],['💴','₱90,000–₱119,999'],['💶','₱120,000–₱149,999'],['💷','₱150,000–₱179,999'],['💎','₱180,000 and above'],['🧐','Cannot determine without seeing the program details']],h:'Affordable Annual Tuition'},
- {p:4,t:'Which financial assistance option would most encourage you to enroll?',o:[['🎖️','Scholarship'],['🗓️','Installment Payment Scheme'],['🏷️','Tuition Discount'],['🏦','Financing Arrangement'],['✏️','Other',1]],h:'Preferred Financial Assistance'},
- {p:5,t:'If an international academic program in collaboration with BAC Malaysia were made available through MVGFC at a reasonable cost, how likely would you be to enroll?',o:[['🚀','Very Likely'],['🤔','Undecided'],['🛑','Very Unlikely']],h:'Likelihood to Enroll'},
- {p:5,t:'Would you recommend the proposed international academic program to a family member, friend, or colleague who may be interested in international education?',o:[['💚','Yes'],['🤔','Maybe'],['🙅','No']],h:'Would Recommend'}
-].map((q,i)=>({...q,n:i+1}));
+/* ========= HELPERS FOR DATA ========= */
+// "*Label" = needs specify box, "!Label" = exclusive option
+const O=l=>l.map(s=>{let f=0;if(s[0]==='*'){f=1;s=s.slice(1)}else if(s[0]==='!'){f=2;s=s.slice(1)}return [s,f]});
+const ATTR=['Very attractive','Somewhat attractive','Neither attractive nor unattractive','Somewhat unattractive','Not attractive at all'];
+const LIKELY=['Definitely would apply','Probably would apply','Might or might not apply','Probably would not apply','Definitely would not apply'];
+const WILL=['Definitely willing','Probably willing','Unsure','Probably unwilling','Definitely unwilling'];
+const FEE5=['Below ₱75,000','₱75,000 to ₱99,999','₱100,000 to ₱124,999','₱125,000 to ₱149,999','₱150,000 to ₱199,999','₱200,000 or more'];
+const MONEY=(pre)=>({pre:'₱',fmt:1,ph:'e.g. 120,000'});
+
+/* ========= PARTS ========= */
+const parts={
+ 1:{emoji:'🎫',tag:'Part 1',title:'Respondent and Decision Profile',blurb:'Let’s check you in! A few quick details about you and how decisions would be made.'},
+ 2:{emoji:'🎓',tag:'Part 2',title:'Veritas Undergraduate Program'},
+ 3:{emoji:'🏆',tag:'Part 3',title:'Veritas Online Graduate Programs'},
+ 4:{emoji:'🇲🇾',tag:'Part 4',title:'UNIMY Conventional Technology Programs'},
+ 5:{emoji:'🇬🇧',tag:'Part 5',title:'BAC Singapore and UK Two-Plus-One Pathway'},
+ 6:{emoji:'🧭',tag:'Part 6',title:'Comparative Preference and Enrollment Readiness',blurb:'Final stretch! Help us compare the options and understand what would make enrollment possible.'},
+ 7:{emoji:'💬',tag:'Part 7',title:'For Respondents Not Interested in Any Option',blurb:'Thank you for being honest. Two quick questions will help us improve what we offer.'}
+};
+const MOD={
+ 2:{desc:['Veritas University College offers undergraduate programs through its learning management system. Possible fields include Business Administration, Accounting and Finance, Digital Transformation, Information Technology, Communication, and Psychology.','Under a recruitment model, MVGFC would recruit and assist interested students while BAC and Veritas manage academic delivery through the LMS. Under a learner model, qualified MVGFC faculty may form part of the teaching pool. Students could also use the MVGFC campus for scheduled face-to-face classes, academic consultation, or learner support, subject to the final approved arrangement.'],
+  rows:[['Study base','Philippines'],['Delivery','Fully online LMS, with possible scheduled MVGFC classes or consultations under the learner model'],['Typical duration','Approximately 3 years, subject to the final program'],['Qualification','Veritas qualification, subject to admissions, completion, and applicable recognition requirements'],['Fees','A locally adjusted Philippine fee package is being explored; no final price has been set']]},
+ 3:{desc:['Veritas University College offers a fully online Master of Business Administration and Master of Education through its LMS. These programs are intended for degree holders who need to combine graduate study with work or family responsibilities.','MVGFC may participate through a recruitment model or a learner model. Under the learner model, qualified MVGFC faculty may join the teaching pool, and students may have access to scheduled campus-based consultations or learning support. The final academic, regulatory, and operating arrangements remain subject to confirmation.'],
+  rows:[['Programs','Master of Business Administration and Master of Education'],['Delivery','Fully online LMS; possible MVGFC consultation or learner support'],['Indicative duration','MBA approximately 1.6 years; MEd approximately 1 year'],['Study base','Philippines; no relocation required'],['Fees','BAC has indicated willingness to adjust fees for the Philippine market; final package not yet set']]},
+ 4:{desc:['The University Malaysia of Computer Science and Engineering, known as UNIMY, offers conventional programs in Malaysia in fields such as computer science, data science, cybersecurity, software engineering, computer engineering, game development, multimedia, and financial technology.','This option requires physical relocation to Malaysia for face-to-face study. Tuition is only one component of the cost; the student must also plan for accommodation, food, travel, visa, insurance, and personal expenses.'],
+  rows:[['Study location','Malaysia'],['Delivery','Conventional face-to-face'],['Typical bachelor’s duration','Approximately 3 years; computer engineering may take longer'],['Indicative tuition in supplied schedule','Many bachelor’s programs list RM21,900 per year before other fees and living costs'],['Additional costs','Visa, registration, resource fees, accommodation, travel, insurance, and living expenses']]},
+ 5:{desc:['Under the proposed pathway, a student would remain based in the Philippines for the first two years and complete the BAC Singapore diploma and advanced diploma stages fully online through the BAC LMS. The student would then travel to the United Kingdom for the final year and, after satisfying admission, progression, visa, and completion requirements, earn the applicable UK bachelor’s degree.','The precise program choices, UK university, UK tuition, living costs, progression rules, award titles, and recognition arrangements must be confirmed before enrollment. Please consider both the convenience of two years based in the Philippines and the substantial financial and practical commitment of one year in the UK.'],
+  rows:[['Years 1 and 2','Based in the Philippines; fully online through the BAC LMS'],['Year 3','Physical study in the United Kingdom'],['Intermediate awards','BAC Singapore diploma and advanced diploma, subject to confirmed award structure'],['Final award','Applicable UK bachelor’s degree, subject to progression and completion'],['Cost structure','Philippine-based online fees for two years plus UK tuition, visa, airfare, accommodation, insurance, and living costs for the final year']]}
+};
+
+/* ========= QUESTIONS ========= */
+// type: single | multi | text | amount (typed fields + single-choice)
+const QS=[
+ {id:'C1',label:'C1',p:0,req:1,privacy:1,type:'single',t:'I have read the information above and voluntarily consent to participate.',o:O(['Yes, proceed','No, end survey'])},
+ {id:'C2',label:'C2',p:0,req:1,type:'single',t:'Are you 18 years old or older?',o:O(['Yes','No'])},
+
+ {id:'1',p:1,type:'multi',t:'Which best describes you?',hint:'Select all that apply.',o:O(['Grade 11 student','Grade 12 student','Recent senior high school graduate','Current college student or transferee','Parent or guardian of a prospective undergraduate student','Bachelor’s degree holder considering graduate study','Teacher, school administrator, or education professional','Business owner, manager, supervisor, or other professional','*Other'])},
+ {id:'2',p:1,type:'single',t:'Where do you currently reside?',o:O(['Cabanatuan City','*Elsewhere in Nueva Ecija – municipality or city','*Elsewhere in Region III – province and municipality or city','*Outside Region III'])},
+ {id:'3',p:1,type:'single',t:'What is the highest educational level completed?',o:O(['Junior high school','Senior high school','Some college','Bachelor’s degree','Some master’s units','Master’s degree','Doctoral units or degree','*Other'])},
+ {id:'4',p:1,type:'single',t:'If you are considering undergraduate study, what is or was your senior high school strand?',o:O(['STEM','ABM','HUMSS','GAS','TVL or ICT','Arts and Design','Sports','Not applicable','*Other'])},
+ {id:'5',p:1,type:'single',t:'If employed, which sector best describes your work?',o:O(['Education','Government or LGU','Business, finance, or management','Information technology or engineering','Health services','Self-employed or family business','*Other','Not presently employed'])},
+ {id:'6',p:1,type:'multi',t:'Who would be involved in deciding and paying for the program?',hint:'Select all that apply.',o:O(['I would decide and pay','I would decide, but my parents or family would pay','The student and parent or guardian would decide jointly','An employer or sponsor may contribute','Scholarship or financing would be necessary','*Other'])},
+ {id:'7',p:1,type:'single',t:'When might you or the prospective student begin a new program?',o:O(['Within 6 months','Within 7 to 12 months','Within 13 to 24 months','More than 2 years from now','No present plan'])},
+ {id:'8',p:1,type:'single',t:'Before this survey, had you seriously considered an international qualification?',o:O(['Yes, and I have researched specific institutions','Yes, but only generally','No, but I am open to it','No'])},
+ {id:'9',p:1,type:'multi',max:2,t:'Which programs would you like to evaluate?',hint:'Select no more than two.',o:O(['Veritas undergraduate program through online learning, with possible MVGFC campus classes or consultations','Veritas online Master of Business Administration','Veritas online Master of Education','UNIMY conventional computing or technology program in Malaysia','BAC Singapore to UK pathway: two online years while based in the Philippines, followed by one year in the UK','!None of these'])},
+
+ // Part 2
+ {id:'10A',p:2,type:'single',t:'Before considering price, how attractive is this offering?',o:O(ATTR)},
+ {id:'11A',p:2,type:'single',t:'Which arrangement would you prefer?',o:O(['Recruitment model: BAC and Veritas provide the online academic delivery through the LMS','Learner model: online delivery plus scheduled teaching, consultation, or support from participating MVGFC faculty','Either arrangement would be acceptable','Neither arrangement','I need more information'])},
+ {id:'12A',p:2,type:'multi',max:3,t:'Which undergraduate fields would you seriously consider?',hint:'Select up to three.',o:O(['Business Administration','Accounting and Finance','Digital Transformation','Information Technology','Communication, Branding, or Digital Marketing','Psychology','Education or Early Childhood Education','*Other'])},
+ {id:'13A',p:2,type:'single',t:'How often would you realistically use optional on-campus classes or consultations at MVGFC?',o:O(['Weekly','Two or three times a month','Monthly','Only before examinations or major requirements','Rarely or never'])},
+ {id:'14A',p:2,type:'single',t:'What maximum total tuition and required academic fees per school year could your household realistically sustain?',o:O([...FEE5,'Cannot determine without a final program and payment schedule'])},
+ {id:'15A',p:2,type:'amount',t:'How likely would you be to submit an application within the next two years at the annual tuition and required academic fee you enter below?',f:[{label:'Annual tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 120,000'}],o:O(LIKELY)},
+ {id:'16A',p:2,type:'single',t:'Which payment plan would make enrollment most feasible?',o:O(['Monthly installment','Payment by term or semester','Quarterly payment','Annual payment with discount','Employer or scholarship support','No payment plan would make the program feasible at the stated price'])},
+
+ // Part 3
+ {id:'10B',p:3,type:'single',t:'Which program would you seriously consider?',o:O(['Master of Business Administration','Master of Education','Either program','Neither program'])},
+ {id:'11B',p:3,type:'single',t:'What is your principal reason for pursuing a master’s degree?',o:O(['Promotion or salary advancement','Qualification for a teaching or administrative position','Career change','Business or management capability','Preparation for doctoral study','Personal development','Employment or mobility abroad','*Other'])},
+ {id:'12B',p:3,type:'single',t:'Before considering price, how attractive is the fully online format?',o:O(ATTR)},
+ {id:'13B',p:3,type:'multi',max:3,t:'Which support would materially improve your likelihood of completing the program?',hint:'Select up to three.',o:O(['Scheduled live online classes','Recorded lectures available on demand','MVGFC faculty consultation','Occasional face-to-face sessions at MVGFC','Research or thesis mentoring','Technical LMS support','Peer study groups','Library and digital research access','Career or professional-development support'])},
+ {id:'14B',p:3,type:'single',t:'How many hours per week could you reliably devote to graduate study?',o:O(['Below 5 hours','5 to 7 hours','8 to 10 hours','11 to 15 hours','More than 15 hours'])},
+ {id:'15B',p:3,type:'single',t:'What maximum total tuition and required academic fees could you realistically pay for the entire master’s program?',o:O([...FEE5,'Cannot determine without a detailed payment schedule'])},
+ {id:'16B',p:3,type:'amount',t:'How likely would you be to apply within the next 12 months at the total fee and payment period you enter below?',f:[{label:'Total tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 150,000'},{label:'Payable over',suf:'months',ph:'e.g. 18'}],o:O(LIKELY)},
+ {id:'17B',p:3,type:'single',t:'Would your employer be willing to support your studies through time allowance, tuition assistance, or both?',o:O(['Yes','Possibly','No','I do not know','Not applicable'])},
+
+ // Part 4
+ {id:'10C',p:4,type:'multi',max:3,t:'Which fields would you seriously consider?',hint:'Select up to three.',o:O(['Computer Science','Data Science','Cybersecurity','Software Engineering','Computer Engineering','Game Development','Multimedia or Interactive Media','Financial Technology','Robotics or Automation','*Other'])},
+ {id:'11C',p:4,type:'single',t:'Before considering total cost, how willing would you be to study physically in Malaysia?',o:O(WILL)},
+ {id:'12C',p:4,type:'single',t:'Has your household previously considered funding overseas college study?',o:O(['Yes, with a specific budget','Yes, but no budget has been set','No, but we may consider it','No'])},
+ {id:'13C',p:4,type:'single',t:'What is the maximum total annual household budget for tuition and living expenses abroad?',o:O(['Below ₱300,000','₱300,000 to ₱499,999','₱500,000 to ₱699,999','₱700,000 to ₱899,999','₱900,000 to ₱1,199,999','₱1,200,000 or more','Cannot determine without a complete cost estimate'])},
+ {id:'14C',p:4,type:'amount',t:'How likely would the student be to apply if the complete annual cost were the amount you enter below?',f:[{label:'Complete annual cost (tuition and living expenses)',pre:'₱',fmt:1,ph:'e.g. 600,000'}],o:O(LIKELY)},
+ {id:'15C',p:4,type:'multi',max:3,t:'What are your greatest concerns?',hint:'Select up to three.',o:O(['Total cost','Student visa approval','Personal safety','Accommodation','Distance from family','Recognition of the qualification in the Philippines','Academic readiness','English-language readiness','Employment after graduation','Medical care and insurance','*Other'])},
+
+ // Part 5
+ {id:'10D',p:5,type:'single',t:'Which field would you seriously consider?',o:O(['Business','Digital Transformation or Information Technology','Law','Hospitality Management','Media and Communication','*Other','I am interested in the pathway but unsure of the field'])},
+ {id:'11D',p:5,type:'single',t:'Before considering price, how attractive is the two-years-online plus one-year-in-the-UK structure?',o:O(ATTR)},
+ {id:'12D',p:5,type:'single',t:'Would the student be willing and able to relocate to the UK for the final year?',o:O(['Definitely yes','Probably yes','Unsure','Probably no','Definitely no'])},
+ {id:'13D',p:5,type:'single',t:'What maximum annual tuition and required academic fees could your household sustain during each of the first two online years?',o:O([...FEE5,'Cannot determine without a complete package'])},
+ {id:'14D',p:5,type:'single',t:'What maximum total household budget could be made available for the UK final year, including tuition and living costs?',o:O(['Below ₱750,000','₱750,000 to ₱999,999','₱1,000,000 to ₱1,249,999','₱1,250,000 to ₱1,499,999','₱1,500,000 to ₱1,999,999','₱2,000,000 or more','Cannot determine without the UK university and complete cost estimate'])},
+ {id:'15D',p:5,type:'amount',t:'How likely would the student be to apply at the costs you enter below?',f:[{label:'Cost per year for each of the first two years',pre:'₱',fmt:1,ph:'e.g. 120,000'},{label:'Estimated all-in UK final-year cost',pre:'₱',fmt:1,ph:'e.g. 1,200,000'}],o:O(LIKELY)},
+ {id:'16D',p:5,type:'multi',max:4,t:'Which matters would have to be resolved before you could decide?',hint:'Select up to four.',o:O(['Identity and standing of the UK university','Recognition of the diploma, advanced diploma, and UK degree','Guaranteed or conditional progression to the UK year','Complete tuition and living-cost estimate','Scholarship or financing','Visa prospects','Refund protection if a visa is denied','Student housing and welfare in the UK','Academic and English-language preparation','Career outcomes','*Other'])},
+
+ // Part 6
+ {id:'18',p:6,type:'single',t:'After reviewing the relevant descriptions and costs, which ONE option would you be most likely to pursue?',o:O(['Veritas undergraduate online program through the recruitment model','Veritas undergraduate online program with MVGFC teaching or campus support under the learner model','Veritas online MBA','Veritas online Master of Education','UNIMY face-to-face technology program in Malaysia','BAC Singapore and UK two-plus-one pathway','A Philippine program not connected with BAC','Another international program','I would postpone further study','None'])},
+ {id:'19',p:6,type:'multi',max:3,t:'Which THREE factors will most strongly determine the final decision?',hint:'Select up to three.',o:O(['Total cost','Installment terms','Scholarship or financing','Recognition in the Philippines','Institution and program reputation','Field of study','Teaching quality','Convenience and schedule','MVGFC faculty involvement','Access to the MVGFC campus','International mobility or overseas experience','Career and employment outcomes','Student safety and welfare','*Other'])},
+ {id:'20',p:6,type:'single',t:'What minimum monthly installment would be manageable without creating serious financial strain?',o:O(['Below ₱5,000','₱5,000 to ₱7,499','₱7,500 to ₱9,999','₱10,000 to ₱14,999','₱15,000 to ₱19,999','₱20,000 or more','Not applicable or cannot determine'])},
+ {id:'21',p:6,type:'multi',max:3,t:'Which forms of assistance would most affect your decision?',hint:'Select up to three.',o:O(['Merit scholarship','Need-based scholarship','Early enrollment discount','Family or alumni discount','Monthly installment plan','Employer sponsorship','Education financing or loan','Reduced fee for the first cohort','!No financial assistance needed'])},
+ {id:'22',p:6,type:'single',t:'How reliable are the learner’s internet access and device for sustained online study?',o:O(['Reliable internet and suitable personal device','Generally adequate, with occasional limitations','Internet or device access would require improvement','No reliable internet or suitable device at present'])},
+ {id:'23',p:6,type:'text',t:'What unanswered question or concern would most affect your decision?'},
+ {id:'24',p:6,type:'single',t:'May MVGFC invite you to a separate information session about the program you selected?',o:O(['Yes – open the separate contact form','Maybe – show me more information first','No'])},
+
+ // Part 7
+ {id:'25',p:7,type:'single',t:'What is the main reason none of the options is suitable?',o:O(['The programs do not match my interests','I prefer a Philippine institution','The expected cost is too high','I do not want online study','I do not want to study abroad','I am not ready to enroll','I am concerned about recognition or accreditation','I need more information','*Other'])},
+ {id:'26',p:7,type:'text',t:'What program, delivery arrangement, or price would make an MVGFC international partnership more relevant to you?'}
+].map(q=>({label:q.id,...q}));
+const QM=Object.fromEntries(QS.map(q=>[q.id,q]));
 const cheers=['Great pick! ✨','Noted! 📝','Smooth flying! 🛫','You’re doing great! 💚','Love it! 🌟','On course! 🧭'];
 
 /* ========= STATE ========= */
-const steps=[{t:'welcome'},{t:'consent'}];
-parts.forEach(p=>{steps.push({t:'intro',p});Q.filter(q=>q.p===p.id).forEach(q=>steps.push({t:'q',q}))});
-steps.push({t:'thanks'});
-let S=JSON.parse(localStorage.getItem('mvgfc_bac_survey')||'null')||{i:0,a:{},consent:false,start:Date.now()};
-if(S.i>=steps.length-1)S={i:0,a:{},consent:false,start:Date.now()};
+let S=JSON.parse(localStorage.getItem(LS_KEY)||'null')||{i:0,a:{},parental:false,start:Date.now()};
+let steps=[];
+let wantsContact=false;
 const $=id=>document.getElementById(id);
-const save=()=>localStorage.setItem('mvgfc_bac_survey',JSON.stringify(S));
+const save=()=>localStorage.setItem(LS_KEY,JSON.stringify(S));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ans=q=>S.a[q.id]||(S.a[q.id]={sel:[],spec:{},vals:[],text:''});
+const sel=id=>(S.a[id]&&S.a[id].sel)||[];
+
+function modules(){
+  const m=new Set();
+  sel('9').forEach(i=>{if(i===0)m.add(2);if(i===1||i===2)m.add(3);if(i===3)m.add(4);if(i===4)m.add(5)});
+  return [...m].sort();
+}
+function buildSteps(){
+  const st=[{t:'welcome'},{t:'q',q:QM.C1}];
+  if(sel('C1')[0]===1){st.push({t:'ended'});return st}
+  st.push({t:'q',q:QM.C2});
+  if(sel('C2')[0]===1)st.push({t:'parental'});
+  st.push({t:'intro',p:1});
+  QS.filter(q=>q.p===1).forEach(q=>st.push({t:'q',q}));
+  const ms=modules();
+  ms.forEach(p=>{st.push({t:'info',p});QS.filter(q=>q.p===p).forEach(q=>st.push({t:'q',q}))});
+  const fin=ms.length?6:7;
+  st.push({t:'intro',p:fin});
+  QS.filter(q=>q.p===fin).forEach(q=>st.push({t:'q',q}));
+  st.push({t:'thanks'});
+  return st;
+}
+if(S.i<0)S.i=0;
 
 /* ========= RENDER ========= */
+function cur(){return steps[S.i]}
 function progress(){
-  const done=steps.slice(0,S.i).filter(s=>s.t==='q').length;
-  const pct=Math.round(done/Q.length*100);
-  $('fill').style.width=pct+'%';
-  $('plane').style.left=pct+'%';
-  const cur=steps[S.i];
-  $('count').textContent=cur.t==='q'?`Question ${cur.q.n} of ${Q.length}`:cur.t==='thanks'?'Arrived! 🎉':'';
+  const total=steps.length-2||1;
+  const pct=Math.min(100,Math.round(Math.max(0,S.i-1)/total*100));
+  $('fill').style.width=pct+'%';$('plane').style.left=pct+'%';
+  const c=cur(),qs=steps.filter(s=>s.t==='q');
+  if(c.t==='q'){$('count').textContent=`Question ${qs.indexOf(c)+1} of ${qs.length}`}
+  else $('count').textContent=c.t==='thanks'?'Arrived! 🎉':'';
 }
-function go(d){S.i=Math.max(0,Math.min(steps.length-1,S.i+d));save();render(d)}
+function go(d){steps=buildSteps();S.i=Math.max(0,Math.min(steps.length-1,S.i+d));save();render(d)}
 function render(d=1){
-  const st=$('stage'),s=steps[S.i];
+  steps=buildSteps();
+  if(S.i>=steps.length)S.i=steps.length-1;
+  const st=$('stage'),s=cur();
   st.className='stage';void st.offsetWidth;st.classList.add(d<0?'back':'fwd');
   progress();
+  const back=`<button class="btn ghost" onclick="go(-1)">← Back</button>`;
   if(s.t==='welcome'){
-    st.innerHTML=`<div class="center"><div class="big">🌏</div><span class="chip">International Program Feasibility Study</span>
-    <h2>Your Journey to Malaysia Starts Here</h2>
-    <p class="lead">MVGFC is exploring a partnership with <b>Brickfields Asia College (BAC), Malaysia</b>. Your answers help shape future international programs. It takes about <b>3 minutes</b>. ✈️</p>
+    st.innerHTML=`<div class="center"><div class="big">🌏</div><span class="chip">International Programs Market Feasibility Survey</span>
+    <h2>Your Journey to a Global Education Starts Here</h2>
+    <p class="lead">Manuel V. Gallego Foundation Colleges, Inc. is studying a possible partnership with <b>BAC Education Group</b>. The proposed offerings differ in delivery, location, cost, and the role of MVGFC. Your answers help determine which offerings are relevant, accessible, and affordable for Cabanatuan City, Nueva Ecija, and Central Luzon.</p>
+    <p class="lead">Estimated completion time: <b>8 to 12 minutes</b>. Questions are routed according to your profile and the programs you choose. ✈️</p>
+    <div class="note">Please answer only on the basis of the program descriptions shown. Programs, fees, schedules, admissions requirements, regulatory approvals, and partnership arrangements remain subject to confirmation. Completing this survey is not an application and does not guarantee that a program will be offered.</div>
     <button class="btn primary" onclick="go(1)">Start my journey 🚀</button></div>`;
-  }else if(s.t==='consent'){
-    st.innerHTML=`<span class="chip">🔒 Data Privacy Statement & Informed Consent</span>
-    <h2>Before we take off…</h2>
-    <p class="lead">In compliance with the Data Privacy Act of 2012 (RA 10173):</p>
-    <ul class="privacy">
-     <li><b>Purpose:</b> Used solely for the feasibility study, institutional planning, and assessment of the proposed international academic program offering.</li>
-     <li><b>Confidentiality:</b> Responses are treated with strict confidentiality and presented in aggregate form. No individual respondent will be identified.</li>
-     <li><b>Storage & Disposal:</b> Securely maintained by the authorized MVGFC office, retained only as long as necessary, then properly disposed of per institutional policy and data privacy regulations.</li>
-     <li><b>Voluntary:</b> Participation is entirely voluntary. You may skip any question or stop at any time without penalty.</li></ul>
-    <label class="check"><input type="checkbox" id="cb" ${S.consent?'checked':''}><span>I have read and understood the information above and voluntarily agree to participate in this survey, and consent to the collection and processing of my responses for the purposes stated.</span></label>
-    <div class="nav"><button class="btn ghost" onclick="go(-1)">← Back</button><button class="btn primary" id="nx" ${S.consent?'':'disabled'} onclick="go(1)">I agree, continue →</button></div>`;
-    $('cb').onchange=e=>{S.consent=e.target.checked;$('nx').disabled=!S.consent;save()};
+  }else if(s.t==='ended'){
+    st.innerHTML=`<div class="center"><div class="big">🙏</div><h2>Thank you for your time</h2>
+    <p class="lead">Since you chose not to participate, the survey has ended and nothing was recorded. If you change your mind, you may go back and update your consent.</p>
+    <div class="nav" style="justify-content:center">${back}</div></div>`;
+  }else if(s.t==='parental'){
+    st.innerHTML=`<span class="chip">👨‍👩‍👧 Parental Consent and Student Assent</span>
+    <h2>Respondents below 18</h2>
+    <p class="lead">A respondent below 18 may proceed only under an MVGFC-approved parental consent and student assent procedure. Please confirm below. If this cannot be confirmed, please stop here and invite a parent or guardian to respond instead.</p>
+    <label class="check"><input type="checkbox" id="pc" ${S.parental?'checked':''}><span>I confirm that a parent or guardian has given consent for this student to take part, and that the student agrees to participate, in line with the MVGFC procedure.</span></label>
+    <div class="nav">${back}<button class="btn primary" id="nx" ${S.parental?'':'disabled'} onclick="go(1)">Confirm and continue →</button></div>`;
+    $('pc').onchange=e=>{S.parental=e.target.checked;$('nx').disabled=!S.parental;save()};
   }else if(s.t==='intro'){
-    st.innerHTML=`<div class="center"><div class="big">${s.p.emoji}</div><span class="chip">Stop ${s.p.id} of 5 · ${s.p.tag}</span>
-    <h2>${s.p.title}</h2><p class="lead">${s.p.blurb}</p>
-    <div class="nav" style="justify-content:center"><button class="btn ghost" onclick="go(-1)">← Back</button><button class="btn primary" onclick="go(1)">Continue →</button></div></div>`;
+    const P=parts[s.p];
+    st.innerHTML=`<div class="center"><div class="big">${P.emoji}</div><span class="chip">${P.tag} · Stop</span>
+    <h2>${P.title}</h2><p class="lead">${P.blurb}</p>
+    <div class="nav" style="justify-content:center">${back}<button class="btn primary" onclick="go(1)">Continue →</button></div></div>`;
+  }else if(s.t==='info'){
+    const P=parts[s.p],M=MOD[s.p];
+    st.innerHTML=`<div class="center"><div class="big" style="font-size:56px">${P.emoji}</div><span class="chip">${P.tag}</span><h2>${P.title}</h2></div>
+    <p class="hint" style="margin-top:10px">Program description</p>
+    ${M.desc.map(x=>`<p class="lead">${esc(x)}</p>`).join('')}
+    <table class="spec-table">${M.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>
+    <div class="nav">${back}<button class="btn primary" onclick="go(1)">I’ve read this · Continue →</button></div>`;
   }else if(s.t==='q'){
-    const q=s.q,a=S.a[q.n]||{};
-    const last=S.i===steps.length-2;
-    st.innerHTML=`<span class="chip">${parts[q.p-1].emoji} Part ${q.p} · ${parts[q.p-1].title}</span>
-    <h2>${q.n}. ${esc(q.t)}</h2>
-    <div class="options" role="radiogroup">${q.o.map((o,k)=>`<button class="opt ${q.o.length%2&&k===q.o.length-1&&q.o.length>3?'wide':''} ${a.k===k?'sel':''}" role="radio" data-k="${k}"><span class="em">${o[0]}</span><span>${esc(o[1])}</span>${k<9?`<kbd>${k+1}</kbd>`:''}</button>`).join('')}</div>
-    <div id="specbox"></div><div class="cheer" id="cheer"></div>
-    <div class="nav"><button class="btn ghost" onclick="go(-1)">← Back</button><button class="btn primary" id="nx" onclick="next()">${last?'Submit 🛬':'Next →'}</button></div>`;
-    st.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
-    showSpec();validate();
+    renderQ(s.q,back);
   }else if(s.t==='thanks'){
-    st.innerHTML=`<div class="center"><div class="big">🎉</div><span class="chip">Welcome to Kuala Lumpur!</span>
+    const link=wantsContact&&CONTACT_FORM_URL?`<p style="margin-bottom:14px"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(CONTACT_FORM_URL)}" target="_blank" rel="noopener">Open the info-session contact form →</a></p>`:'';
+    st.innerHTML=`<div class="center"><div class="big">🎉</div><span class="chip">Thank you!</span>
     <h2>Thank you for your valuable participation!</h2>
-    <p class="lead">Your responses were recorded and will help MVGFC shape its international program offerings. Salamat po! 💚</p>
-    <button class="btn gold" onclick="restart()">Submit another response</button></div>`;
+    <p class="lead">Your responses were recorded and will help MVGFC plan its international program offerings. Salamat po! 💚</p>
+    ${link}<button class="btn gold" onclick="restart()">Submit another response</button></div>`;
     burst();
   }
 }
-function pick(k){
-  const q=steps[S.i].q,o=q.o[k];
-  S.a[q.n]={k,label:o[1],spec:S.a[q.n]&&S.a[q.n].k===k?S.a[q.n].spec:''};save();
-  document.querySelectorAll('.opt').forEach((b,i)=>b.classList.toggle('sel',i===k));
-  $('cheer').textContent=cheers[Math.floor(Math.random()*cheers.length)];
+
+function renderQ(q,back){
+  const a=S.a[q.id]||{sel:[],spec:{},vals:[],text:''};
+  const st=$('stage');
+  const last=steps[S.i+1]&&steps[S.i+1].t==='thanks';
+  const P=q.p?parts[q.p]:null;
+  const chip=P?`${P.emoji} ${P.tag} · ${P.title}`:'🔒 Privacy Notice and Consent';
+  let h=`<span class="chip">${chip}</span>`;
+  if(q.privacy){
+    h+=`<ul class="privacy">
+     <li><b>Purpose:</b> Responses will be used for feasibility analysis, institutional planning, and possible program development.</li>
+     <li><b>Confidentiality:</b> Results will be analyzed in aggregate. No individual respondent will be identified.</li>
+     <li><b>Voluntary:</b> Participation is voluntary. You may skip a question or stop at any time.</li>
+     <li><b>Contact details:</b> If you want future updates, your contact information is collected in a separate follow-up form and is not linked to this response file unless you expressly consent.</li>
+     <li><b>Data Privacy Act of 2012 (RA 10173):</b> Your data is kept securely by the authorized MVGFC office, retained only as long as necessary, then properly disposed of.</li></ul>`;
+  }
+  h+=`<h2>${esc(q.label)}. ${esc(q.t)}</h2>`;
+  if(q.hint)h+=`<p class="hint">${esc(q.hint)}</p>`;
+  if(q.type==='single'||q.type==='multi'||q.type==='amount'){
+    if(q.type==='amount'){
+      h+=q.f.map((f,j)=>`<label class="amt">${esc(f.label)}<div class="amt-row">${f.pre?`<b>${f.pre}</b>`:''}<input inputmode="numeric" data-j="${j}" placeholder="${esc(f.ph||'')}" value="${esc(fmtVal(f,a.vals[j]||''))}">${f.suf?`<b style="font-size:14px">${f.suf}</b>`:''}</div></label>`).join('');
+      h+=`<p class="sub">Your likelihood to apply</p>`;
+    }
+    const long=q.o.some(o=>o[0].length>46);
+    h+=`<div class="options ${long?'one':''}" role="${q.type==='multi'?'group':'radiogroup'}">${q.o.map((o,k)=>`<button class="opt ${q.type==='multi'?'multi':''} ${a.sel.includes(k)?'sel':''}" data-k="${k}"><span class="ind">✓</span><span class="tx">${esc(o[0])}</span>${k<9?`<kbd>${k+1}</kbd>`:''}</button>`).join('')}</div>
+    <div id="specbox"></div>`;
+  }else if(q.type==='text'){
+    h+=`<textarea class="spec" id="ta" placeholder="Type your answer here (optional)…">${esc(a.text||'')}</textarea>`;
+  }
+  h+=`<div class="cheer" id="cheer"></div>
+  <div class="nav">${back}${(!q.req&&q.type!=='text')?`<button class="skip" onclick="skipQ()">Skip this question</button>`:'<span></span>'}<button class="btn primary" id="nx" onclick="next()">${last?'Submit 🛬':'Next →'}</button></div>`;
+  st.innerHTML=h;
+  st.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+  st.querySelectorAll('.amt input').forEach(inp=>inp.oninput=e=>{
+    const f=q.f[+e.target.dataset.j],aa=ans(q);
+    const raw=e.target.value.replace(/\D/g,'').slice(0,10);
+    aa.vals[+e.target.dataset.j]=raw;e.target.value=fmtVal(f,raw);save();validate();
+  });
+  const ta=$('ta');if(ta)ta.oninput=e=>{ans(q).text=e.target.value;save()};
   showSpec();validate();
-  if(!o[2])setTimeout(()=>{if(steps[S.i].q===q)next()},500);
 }
-function showSpec(){
-  const q=steps[S.i].q,a=S.a[q.n],box=$('specbox');
-  if(a&&q.o[a.k][2]){
-    box.innerHTML=`<input class="spec" id="spec" placeholder="Please specify…" value="${esc(a.spec||'')}">`;
-    $('spec').oninput=e=>{a.spec=e.target.value;save();validate()};$('spec').focus();
-  }else box.innerHTML='';
+const fmtVal=(f,v)=>f.fmt&&v?Number(v).toLocaleString('en-US'):v;
+
+function pick(k){
+  const q=cur().q,a=ans(q),o=q.o[k];
+  if(q.type==='multi'){
+    const i=a.sel.indexOf(k);
+    if(i>-1)a.sel.splice(i,1);
+    else if(o[1]===2)a.sel=[k];
+    else{
+      a.sel=a.sel.filter(x=>q.o[x][1]!==2);
+      if(q.max&&a.sel.length>=q.max){$('cheer').textContent=`You can select up to ${q.max} only.`;return}
+      a.sel.push(k);
+    }
+  }else a.sel=[k];
+  save();
+  document.querySelectorAll('.opt').forEach((b,i)=>b.classList.toggle('sel',a.sel.includes(i)));
+  $('cheer').textContent=cheers[Math.floor(Math.random()*cheers.length)];
+  showSpec(o[1]===1&&a.sel.includes(k)?k:null);validate();
+  if(q.type==='single'&&!o[1])setTimeout(()=>{if(cur().q===q)next()},500);
 }
-function validate(){
-  const q=steps[S.i].q,a=S.a[q.n];
-  const ok=a&&(!q.o[a.k][2]||(a.spec||'').trim());
-  $('nx').disabled=!ok;
+function showSpec(focusK){
+  const q=cur().q,a=S.a[q.id],box=$('specbox');if(!box)return;
+  if(!a){box.innerHTML='';return}
+  const ks=a.sel.filter(k=>q.o[k][1]===1);
+  box.innerHTML=ks.map(k=>`<input class="spec" data-k="${k}" placeholder="Please specify (${esc(q.o[k][0])})…" value="${esc(a.spec[k]||'')}">`).join('');
+  box.querySelectorAll('input').forEach(inp=>{
+    inp.oninput=e=>{a.spec[+e.target.dataset.k]=e.target.value;save();validate()};
+    if(focusK!=null&&+inp.dataset.k===focusK)inp.focus();
+  });
 }
+function valid(q){
+  if(q.type==='text')return true;
+  const a=S.a[q.id];if(!a||!a.sel.length)return false;
+  if(!a.sel.every(k=>q.o[k][1]!==1||(a.spec[k]||'').trim()))return false;
+  if(q.type==='amount'&&!q.f.every((f,j)=>(a.vals[j]||'').trim()&&Number(a.vals[j])>0))return false;
+  return true;
+}
+function validate(){const b=$('nx');if(b)b.disabled=!valid(cur().q)}
+function skipQ(){const q=cur().q;delete S.a[q.id];save();if(steps[S.i+1].t==='thanks')submit();else go(1)}
 function next(){
-  if($('nx').disabled)return;
-  if(S.i===steps.length-2)submit();else go(1);
+  const b=$('nx');if(b&&b.disabled)return;
+  steps=buildSteps();
+  if(steps[S.i+1]&&steps[S.i+1].t==='thanks')submit();else go(1);
 }
 document.addEventListener('keydown',e=>{
-  const s=steps[S.i];if(s.t!=='q'||e.target.tagName==='INPUT')return;
-  if(/^[1-9]$/.test(e.key)&&s.q.o[+e.key-1])pick(+e.key-1);
+  const s=cur();if(!s||s.t!=='q'||['INPUT','TEXTAREA'].includes(e.target.tagName))return;
+  if(s.q.type!=='text'&&/^[1-9]$/.test(e.key)&&s.q.o&&s.q.o[+e.key-1])pick(+e.key-1);
   if(e.key==='Enter')next();
 });
 
 /* ========= SUBMIT ========= */
+function valText(q,a){
+  return a.sel.map(k=>{const [l,f]=q.o[k];return f===1&&a.spec[k]?`${l}: ${a.spec[k].trim()}`:l}).join('; ');
+}
 function payload(){
-  const d={timestamp:new Date().toISOString(),consent:'Yes',duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent,source:SURVEY_SOURCE||'Unknown'};
-  Q.forEach(q=>{const a=S.a[q.n];d['q'+q.n]=a?(a.spec?`${a.label}: ${a.spec.trim()}`:a.label):''});
+  steps=buildSteps();
+  const active=new Set(steps.filter(s=>s.t==='q').map(s=>s.q.id));
+  const d={timestamp:new Date().toISOString(),consent_c1:'Yes',age18:sel('C2')[0]===0?'Yes':'No',
+    parental_consent:sel('C2')[0]===1&&S.parental?'Yes':'',
+    duration_sec:Math.round((Date.now()-S.start)/1000),device:navigator.userAgent,source:SURVEY_SOURCE||'Unknown'};
+  QS.forEach(q=>{
+    if(q.p===0||!active.has(q.id))return;
+    const a=S.a[q.id];if(!a)return;
+    if(q.type==='text'){if((a.text||'').trim())d['q_'+q.id]=a.text.trim();return}
+    if(!a.sel.length)return;
+    d['q_'+q.id]=valText(q,a);
+    if(q.type==='amount')q.f.forEach((f,j)=>{if(a.vals[j])d['q_'+q.id+'_'+(j+1)]=a.vals[j]});
+  });
   return d;
 }
 async function send(p){
   await fetch(SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(p)});
 }
 async function submit(){
-  $('nx').disabled=true;$('nx').textContent='Landing… ✈️';
+  const nx=$('nx');if(nx){nx.disabled=true;nx.textContent='Landing… ✈️'}
   const p=payload();
+  wantsContact=sel('24')[0]===0;
   try{await send(p)}catch(e){
-    const qd=JSON.parse(localStorage.getItem('mvgfc_bac_queue')||'[]');qd.push(p);localStorage.setItem('mvgfc_bac_queue',JSON.stringify(qd));
+    const qd=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]');qd.push(p);localStorage.setItem(QUEUE_KEY,JSON.stringify(qd));
   }
-  S.i=steps.length-1;S.a={};S.consent=false;localStorage.removeItem('mvgfc_bac_survey');render(1);
+  S.a={};S.parental=false;localStorage.removeItem(LS_KEY);
+  steps=[...steps];S.i=steps.length-1;
+  steps=[{t:'thanks'}];S.i=0;render(1);
 }
 async function flushQueue(){
-  const qd=JSON.parse(localStorage.getItem('mvgfc_bac_queue')||'[]');if(!qd.length)return;
+  const qd=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]');if(!qd.length)return;
   const left=[];for(const p of qd){try{await send(p)}catch(e){left.push(p)}}
-  localStorage.setItem('mvgfc_bac_queue',JSON.stringify(left));
+  localStorage.setItem(QUEUE_KEY,JSON.stringify(left));
 }
 window.addEventListener('online',flushQueue);flushQueue();
-function restart(){S={i:0,a:{},consent:false,start:Date.now()};save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
+function restart(){S={i:0,a:{},parental:false,start:Date.now()};wantsContact=false;save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
 
 /* ========= CONFETTI ========= */
 function burst(){
