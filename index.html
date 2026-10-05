@@ -67,8 +67,9 @@ p.lead{color:var(--muted);font-size:14px;line-height:1.7;margin-bottom:14px}
 .opt.sel .ind{background:#fff;border-color:#fff;color:var(--g1)}
 .opt.sel kbd{color:#cfe8d1}
 @keyframes pop{40%{transform:scale(1.03)}}
-.spec{width:100%;margin-top:12px;padding:13px 16px;border-radius:14px;border:2px solid var(--g3);font:inherit;font-size:14px;outline:none;animation:inR .3s}
+.spec{width:100%;margin-top:12px;padding:13px 16px;border-radius:14px;border:2px solid var(--g3);font:inherit;font-size:14px;outline:none;animation:inR .3s;background:#fff}
 .spec:focus{box-shadow:0 0 0 4px rgba(102,187,106,.25)}
+select.spec{cursor:pointer;margin-top:16px}
 textarea.spec{resize:vertical;min-height:110px;margin-top:16px}
 .amt{display:block;margin-top:14px;font-size:13px;font-weight:600;color:var(--ink)}
 .amt-row{display:flex;align-items:center;gap:8px;margin-top:6px}
@@ -197,96 +198,109 @@ const ATTR=['Very attractive','Somewhat attractive','Neither attractive nor unat
 const LIKELY=['Definitely would apply','Probably would apply','Might or might not apply','Probably would not apply','Definitely would not apply'];
 const WILL=['Definitely willing','Probably willing','Unsure','Probably unwilling','Definitely unwilling'];
 const FEE5=['Below ₱75,000','₱75,000 to ₱99,999','₱100,000 to ₱124,999','₱125,000 to ₱149,999','₱150,000 to ₱199,999','₱200,000 or more'];
-const MONEY=(pre)=>({pre:'₱',fmt:1,ph:'e.g. 120,000'});
+
+// Compact region dropdown (grouped)
+const REGION_GROUPS=[
+ ['Luzon',['NCR – National Capital Region','CAR – Cordillera Administrative Region','Region I – Ilocos Region','Region II – Cagayan Valley','Region III – Central Luzon','Region IV-A – CALABARZON','MIMAROPA Region','Region V – Bicol Region']],
+ ['Visayas',['Region VI – Western Visayas','Negros Island Region','Region VII – Central Visayas','Region VIII – Eastern Visayas']],
+ ['Mindanao',['Region IX – Zamboanga Peninsula','Region X – Northern Mindanao','Region XI – Davao Region','Region XII – SOCCSKSARGEN','Region XIII – Caraga','BARMM']],
+ ['Abroad',['Outside the Philippines']]
+];
+const REGION_FLAT=REGION_GROUPS.flatMap(g=>g[1]).map(s=>[s,0]);
 
 /* ========= PARTS ========= */
+const MOD_NAMES={2:'Veritas undergraduate',3:'Veritas MBA / MEd',4:'UNIMY in Malaysia',5:'BAC Singapore–UK pathway'};
 const parts={
- 1:{emoji:'🎫',tag:'Part 1',title:'Respondent and Decision Profile',blurb:'Let’s check you in! A few quick details about you and how decisions would be made.'},
+ 1:{emoji:'🎫',tag:'Part 1',title:'Let’s Get to Know You',blurb:'First, a quick check-in: who you are and how decisions get made at your end. This helps us point you to the options that actually fit.'},
  2:{emoji:'🎓',tag:'Part 2',title:'Veritas Undergraduate Program'},
  3:{emoji:'🏆',tag:'Part 3',title:'Veritas Online Graduate Programs'},
  4:{emoji:'🇲🇾',tag:'Part 4',title:'UNIMY Conventional Technology Programs'},
  5:{emoji:'🇬🇧',tag:'Part 5',title:'BAC Singapore and UK Two-Plus-One Pathway'},
- 6:{emoji:'🧭',tag:'Part 6',title:'Comparative Preference and Enrollment Readiness',blurb:'Final stretch! Help us compare the options and understand what would make enrollment possible.'},
- 7:{emoji:'💬',tag:'Part 7',title:'For Respondents Not Interested in Any Option',blurb:'Thank you for being honest. Two quick questions will help us improve what we offer.'}
+ 6:{emoji:'🧭',tag:'Part 6',title:'Putting It All Together',blurb:()=>`Last stretch! You picked ${modsPicked()}. Let’s see which one fits you best and what would make it doable.`},
+ 7:{emoji:'💬',tag:'Part 7',title:'Not Feeling Any of These? That’s Okay',blurb:'Totally fine, and honestly, your feedback helps us a lot. Just two quick questions.'}
 };
+function modsPicked(){
+  const n=modules().map(p=>MOD_NAMES[p]);
+  return n.length?n.join(' and '):'your options';
+}
 const MOD={
- 2:{desc:['Veritas University College offers undergraduate programs through its learning management system. Possible fields include Business Administration, Accounting and Finance, Digital Transformation, Information Technology, Communication, and Psychology.','Under a recruitment model, MVGFC would recruit and assist interested students while BAC and Veritas manage academic delivery through the LMS. Under a learner model, qualified MVGFC faculty may form part of the teaching pool. Students could also use the MVGFC campus for scheduled face-to-face classes, academic consultation, or learner support, subject to the final approved arrangement.'],
+ 2:{desc:['Veritas University College offers undergraduate programs through its learning management system. Possible fields include Business Administration, Accounting and Finance, Digital Transformation, Information Technology, Communication, and Psychology.','Under a recruitment model, MVGFC would recruit and assist interested students while BAC Education Group and Veritas University College manage academic delivery through the LMS. Under a learner model, qualified MVGFC faculty may form part of the teaching pool. Students could also use the MVGFC campus for scheduled face-to-face classes, academic consultation, or learner support, subject to the final approved arrangement.'],
   rows:[['Study base','Philippines'],['Delivery','Fully online LMS, with possible scheduled MVGFC classes or consultations under the learner model'],['Typical duration','Approximately 3 years, subject to the final program'],['Qualification','Veritas qualification, subject to admissions, completion, and applicable recognition requirements'],['Fees','A locally adjusted Philippine fee package is being explored; no final price has been set']]},
- 3:{desc:['Veritas University College offers a fully online Master of Business Administration and Master of Education through its LMS. These programs are intended for degree holders who need to combine graduate study with work or family responsibilities.','MVGFC may participate through a recruitment model or a learner model. Under the learner model, qualified MVGFC faculty may join the teaching pool, and students may have access to scheduled campus-based consultations or learning support. The final academic, regulatory, and operating arrangements remain subject to confirmation.'],
-  rows:[['Programs','Master of Business Administration and Master of Education'],['Delivery','Fully online LMS; possible MVGFC consultation or learner support'],['Indicative duration','MBA approximately 1.6 years; MEd approximately 1 year'],['Study base','Philippines; no relocation required'],['Fees','BAC has indicated willingness to adjust fees for the Philippine market; final package not yet set']]},
- 4:{desc:['The University Malaysia of Computer Science and Engineering, known as UNIMY, offers conventional programs in Malaysia in fields such as computer science, data science, cybersecurity, software engineering, computer engineering, game development, multimedia, and financial technology.','This option requires physical relocation to Malaysia for face-to-face study. Tuition is only one component of the cost; the student must also plan for accommodation, food, travel, visa, insurance, and personal expenses.'],
+ 3:{desc:['Veritas University College offers a fully online Master of Business Administration and Master of Education through its LMS. These programs are made for degree holders who need to balance graduate study with work or family responsibilities.','MVGFC may participate through a recruitment model or a learner model. Under the learner model, qualified MVGFC faculty may join the teaching pool, and students may have access to scheduled campus-based consultations or learning support. The final academic, regulatory, and operating arrangements remain subject to confirmation.'],
+  rows:[['Programs','Master of Business Administration and Master of Education'],['Delivery','Fully online LMS; possible MVGFC consultation or learner support'],['Indicative duration','MBA approximately 1.6 years; MEd approximately 1 year'],['Study base','Philippines; no relocation required'],['Fees','BAC Education Group has indicated willingness to adjust fees for the Philippine market; final package not yet set']]},
+ 4:{desc:['The University Malaysia of Computer Science and Engineering, known as UNIMY, offers conventional programs in Malaysia in fields such as computer science, data science, cybersecurity, software engineering, computer engineering, game development, multimedia, and financial technology.','Heads-up: this option means physically relocating to Malaysia for face-to-face study. Tuition is only one part of the cost. You would also need to plan for accommodation, food, travel, visa, insurance, and personal expenses.'],
   rows:[['Study location','Malaysia'],['Delivery','Conventional face-to-face'],['Typical bachelor’s duration','Approximately 3 years; computer engineering may take longer'],['Indicative tuition in supplied schedule','Many bachelor’s programs list RM21,900 per year before other fees and living costs'],['Additional costs','Visa, registration, resource fees, accommodation, travel, insurance, and living expenses']]},
- 5:{desc:['Under the proposed pathway, a student would remain based in the Philippines for the first two years and complete the BAC Singapore diploma and advanced diploma stages fully online through the BAC LMS. The student would then travel to the United Kingdom for the final year and, after satisfying admission, progression, visa, and completion requirements, earn the applicable UK bachelor’s degree.','The precise program choices, UK university, UK tuition, living costs, progression rules, award titles, and recognition arrangements must be confirmed before enrollment. Please consider both the convenience of two years based in the Philippines and the substantial financial and practical commitment of one year in the UK.'],
+ 5:{desc:['Here’s how this pathway works: you stay in the Philippines for the first two years and complete the BAC Singapore diploma and advanced diploma stages fully online through the BAC learning management system. Then you head to the United Kingdom for the final year and, after meeting admission, progression, visa, and completion requirements, earn the applicable UK bachelor’s degree.','The exact program choices, UK university, UK tuition, living costs, progression rules, award titles, and recognition arrangements still need to be confirmed before enrollment. As you answer, think about both the convenience of two years based in the Philippines and the real financial and practical commitment of one year in the UK.'],
   rows:[['Years 1 and 2','Based in the Philippines; fully online through the BAC LMS'],['Year 3','Physical study in the United Kingdom'],['Intermediate awards','BAC Singapore diploma and advanced diploma, subject to confirmed award structure'],['Final award','Applicable UK bachelor’s degree, subject to progression and completion'],['Cost structure','Philippine-based online fees for two years plus UK tuition, visa, airfare, accommodation, insurance, and living costs for the final year']]}
 };
 
 /* ========= QUESTIONS ========= */
-// type: single | multi | text | amount (typed fields + single-choice)
+// type: single | multi | select | text | amount (typed fields + single-choice)
 const QS=[
- {id:'C1',label:'C1',p:0,req:1,privacy:1,type:'single',t:'I have read the information above and voluntarily consent to participate.',o:O(['Yes, proceed','No, end survey'])},
+ {id:'C1',label:'C1',p:0,req:1,privacy:1,type:'single',t:'Quick privacy check: are you cool with everything above?',o:O(['Yes, let’s go','No, end survey'])},
  {id:'C2',label:'C2',p:0,req:1,type:'single',t:'Are you 18 years old or older?',o:O(['Yes','No'])},
 
- {id:'1',p:1,type:'multi',t:'Which best describes you?',hint:'Select all that apply.',o:O(['Grade 11 student','Grade 12 student','Recent senior high school graduate','Current college student or transferee','Parent or guardian of a prospective undergraduate student','Bachelor’s degree holder considering graduate study','Teacher, school administrator, or education professional','Business owner, manager, supervisor, or other professional','*Other'])},
- {id:'2',p:1,type:'single',t:'Where do you currently reside?',o:O(['Cabanatuan City','*Elsewhere in Nueva Ecija – municipality or city','*Elsewhere in Region III – province and municipality or city','*Outside Region III'])},
- {id:'3',p:1,type:'single',t:'What is the highest educational level completed?',o:O(['Junior high school','Senior high school','Some college','Bachelor’s degree','Some master’s units','Master’s degree','Doctoral units or degree','*Other'])},
- {id:'4',p:1,type:'single',t:'If you are considering undergraduate study, what is or was your senior high school strand?',o:O(['STEM','ABM','HUMSS','GAS','TVL or ICT','Arts and Design','Sports','Not applicable','*Other'])},
- {id:'5',p:1,type:'single',t:'If employed, which sector best describes your work?',o:O(['Education','Government or LGU','Business, finance, or management','Information technology or engineering','Health services','Self-employed or family business','*Other','Not presently employed'])},
- {id:'6',p:1,type:'multi',t:'Who would be involved in deciding and paying for the program?',hint:'Select all that apply.',o:O(['I would decide and pay','I would decide, but my parents or family would pay','The student and parent or guardian would decide jointly','An employer or sponsor may contribute','Scholarship or financing would be necessary','*Other'])},
- {id:'7',p:1,type:'single',t:'When might you or the prospective student begin a new program?',o:O(['Within 6 months','Within 7 to 12 months','Within 13 to 24 months','More than 2 years from now','No present plan'])},
- {id:'8',p:1,type:'single',t:'Before this survey, had you seriously considered an international qualification?',o:O(['Yes, and I have researched specific institutions','Yes, but only generally','No, but I am open to it','No'])},
- {id:'9',p:1,type:'multi',max:2,t:'Which programs would you like to evaluate?',hint:'Select no more than two.',o:O(['Veritas undergraduate program through online learning, with possible MVGFC campus classes or consultations','Veritas online Master of Business Administration','Veritas online Master of Education','UNIMY conventional computing or technology program in Malaysia','BAC Singapore to UK pathway: two online years while based in the Philippines, followed by one year in the UK','!None of these'])},
+ {id:'1',p:1,type:'multi',t:'So, who’s joining us today?',hint:'Pick all that fit you.',o:O(['Grade 11 student','Grade 12 student','Recent senior high school graduate','Current college student or transferee','Parent or guardian of a prospective undergraduate student','Bachelor’s degree holder considering graduate study','Teacher, school administrator, or education professional','Business owner, manager, supervisor, or other professional','*Other'])},
+ {id:'2',p:1,type:'select',t:'Where in the Philippines are you based?',groups:REGION_GROUPS,extra:{label:'Province or city (optional)',ph:'e.g. Quezon City, Cebu City, Davao City'},o:REGION_FLAT},
+ {id:'3',p:1,type:'single',t:'What’s the highest level of education you’ve finished so far?',o:O(['Junior high school','Senior high school','Some college','Bachelor’s degree','Some master’s units','Master’s degree','Doctoral units or degree','*Other'])},
+ {id:'4',p:1,type:'single',t:'If you’re eyeing undergrad, what was (or is) your senior high school strand?',o:O(['STEM','ABM','HUMSS','GAS','TVL or ICT','Arts and Design','Sports','Not applicable','*Other'])},
+ {id:'5',p:1,type:'single',t:'If you’re working, which field are you in?',o:O(['Education','Government or LGU','Business, finance, or management','Information technology or engineering','Health services','Self-employed or family business','*Other','Not presently employed'])},
+ {id:'6',p:1,type:'multi',t:'Who’s part of the decision, and who’s paying for it?',hint:'Pick all that apply.',o:O(['I would decide and pay','I would decide, but my parents or family would pay','The student and parent or guardian would decide jointly','An employer or sponsor may contribute','Scholarship or financing would be necessary','*Other'])},
+ {id:'7',p:1,type:'single',t:'When are you (or the student) hoping to start a new program?',o:O(['Within 6 months','Within 7 to 12 months','Within 13 to 24 months','More than 2 years from now','No present plan'])},
+ {id:'8',p:1,type:'single',t:'Before today, had you ever seriously thought about getting an international qualification?',o:O(['Yes, and I have researched specific institutions','Yes, but only generally','No, but I am open to it','No'])},
+ {id:'9',p:1,type:'multi',max:2,t:'Which programs do you want to check out?',hint:'Pick up to 2. We’ll go deeper on those so this stays quick.',o:O(['Veritas undergraduate program through online learning, with possible MVGFC campus classes or consultations','Veritas online Master of Business Administration','Veritas online Master of Education','UNIMY conventional computing or technology program in Malaysia','BAC Singapore to UK pathway: two online years while based in the Philippines, followed by one year in the UK','!None of these'])},
 
  // Part 2
- {id:'10A',p:2,type:'single',t:'Before considering price, how attractive is this offering?',o:O(ATTR)},
- {id:'11A',p:2,type:'single',t:'Which arrangement would you prefer?',o:O(['Recruitment model: BAC and Veritas provide the online academic delivery through the LMS','Learner model: online delivery plus scheduled teaching, consultation, or support from participating MVGFC faculty','Either arrangement would be acceptable','Neither arrangement','I need more information'])},
- {id:'12A',p:2,type:'multi',max:3,t:'Which undergraduate fields would you seriously consider?',hint:'Select up to three.',o:O(['Business Administration','Accounting and Finance','Digital Transformation','Information Technology','Communication, Branding, or Digital Marketing','Psychology','Education or Early Childhood Education','*Other'])},
- {id:'13A',p:2,type:'single',t:'How often would you realistically use optional on-campus classes or consultations at MVGFC?',o:O(['Weekly','Two or three times a month','Monthly','Only before examinations or major requirements','Rarely or never'])},
- {id:'14A',p:2,type:'single',t:'What maximum total tuition and required academic fees per school year could your household realistically sustain?',o:O([...FEE5,'Cannot determine without a final program and payment schedule'])},
- {id:'15A',p:2,type:'amount',t:'How likely would you be to submit an application within the next two years at the annual tuition and required academic fee you enter below?',f:[{label:'Annual tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 120,000'}],o:O(LIKELY)},
- {id:'16A',p:2,type:'single',t:'Which payment plan would make enrollment most feasible?',o:O(['Monthly installment','Payment by term or semester','Quarterly payment','Annual payment with discount','Employer or scholarship support','No payment plan would make the program feasible at the stated price'])},
+ {id:'10A',p:2,type:'single',t:'Forget the price for a sec. How much does this program catch your interest?',o:O(ATTR)},
+ {id:'11A',p:2,type:'single',t:'Which setup sounds more like you?',o:O(['Recruitment model: BAC Education Group and Veritas University College provide the online academic delivery through the LMS','Learner model: online delivery plus scheduled teaching, consultation, or support from participating MVGFC faculty','Either arrangement would be acceptable','Neither arrangement','I need more information'])},
+ {id:'12A',p:2,type:'multi',max:3,t:'Which fields are you actually considering?',hint:'Pick up to 3.',o:O(['Business Administration','Accounting and Finance','Digital Transformation','Information Technology','Communication, Branding, or Digital Marketing','Psychology','Education or Early Childhood Education','*Other'])},
+ {id:'13A',p:2,type:'single',t:'Realistically, how often would you drop by the MVGFC campus for optional classes or consults?',o:O(['Weekly','Two or three times a month','Monthly','Only before examinations or major requirements','Rarely or never'])},
+ {id:'14A',p:2,type:'single',t:'What’s the most your household can comfortably handle for tuition and required fees per school year?',o:O([...FEE5,'Cannot determine without a final program and payment schedule'])},
+ {id:'15A',p:2,type:'amount',t:'Okay, price check! Type the yearly tuition and required fees you have in mind. At that price, how likely would you apply within the next 2 years?',f:[{label:'Annual tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 120,000'}],o:O(LIKELY)},
+ {id:'16A',p:2,type:'single',t:'Which payment plan would make this doable for you?',o:O(['Monthly installment','Payment by term or semester','Quarterly payment','Annual payment with discount','Employer or scholarship support','No payment plan would make the program feasible at the stated price'])},
 
  // Part 3
- {id:'10B',p:3,type:'single',t:'Which program would you seriously consider?',o:O(['Master of Business Administration','Master of Education','Either program','Neither program'])},
- {id:'11B',p:3,type:'single',t:'What is your principal reason for pursuing a master’s degree?',o:O(['Promotion or salary advancement','Qualification for a teaching or administrative position','Career change','Business or management capability','Preparation for doctoral study','Personal development','Employment or mobility abroad','*Other'])},
- {id:'12B',p:3,type:'single',t:'Before considering price, how attractive is the fully online format?',o:O(ATTR)},
- {id:'13B',p:3,type:'multi',max:3,t:'Which support would materially improve your likelihood of completing the program?',hint:'Select up to three.',o:O(['Scheduled live online classes','Recorded lectures available on demand','MVGFC faculty consultation','Occasional face-to-face sessions at MVGFC','Research or thesis mentoring','Technical LMS support','Peer study groups','Library and digital research access','Career or professional-development support'])},
- {id:'14B',p:3,type:'single',t:'How many hours per week could you reliably devote to graduate study?',o:O(['Below 5 hours','5 to 7 hours','8 to 10 hours','11 to 15 hours','More than 15 hours'])},
- {id:'15B',p:3,type:'single',t:'What maximum total tuition and required academic fees could you realistically pay for the entire master’s program?',o:O([...FEE5,'Cannot determine without a detailed payment schedule'])},
- {id:'16B',p:3,type:'amount',t:'How likely would you be to apply within the next 12 months at the total fee and payment period you enter below?',f:[{label:'Total tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 150,000'},{label:'Payable over',suf:'months',ph:'e.g. 18'}],o:O(LIKELY)},
- {id:'17B',p:3,type:'single',t:'Would your employer be willing to support your studies through time allowance, tuition assistance, or both?',o:O(['Yes','Possibly','No','I do not know','Not applicable'])},
+ {id:'10B',p:3,type:'single',t:'Which one are you seriously considering?',o:O(['Master of Business Administration','Master of Education','Either program','Neither program'])},
+ {id:'11B',p:3,type:'single',t:'What’s your main reason for going for a master’s?',o:O(['Promotion or salary advancement','Qualification for a teaching or administrative position','Career change','Business or management capability','Preparation for doctoral study','Personal development','Employment or mobility abroad','*Other'])},
+ {id:'12B',p:3,type:'single',t:'Price aside, how do you feel about studying fully online?',o:O(ATTR)},
+ {id:'13B',p:3,type:'multi',max:3,t:'What would really help you finish the program?',hint:'Pick up to 3.',o:O(['Scheduled live online classes','Recorded lectures available on demand','MVGFC faculty consultation','Occasional face-to-face sessions at MVGFC','Research or thesis mentoring','Technical LMS support','Peer study groups','Library and digital research access','Career or professional-development support'])},
+ {id:'14B',p:3,type:'single',t:'How many hours a week can you reliably give to studying?',o:O(['Below 5 hours','5 to 7 hours','8 to 10 hours','11 to 15 hours','More than 15 hours'])},
+ {id:'15B',p:3,type:'single',t:'What’s the most you could realistically pay for the whole master’s program (tuition and required fees)?',o:O([...FEE5,'Cannot determine without a detailed payment schedule'])},
+ {id:'16B',p:3,type:'amount',t:'Type the total fee you have in mind and how many months you’d want to pay it over. With that setup, how likely would you apply in the next 12 months?',f:[{label:'Total tuition and required academic fee',pre:'₱',fmt:1,ph:'e.g. 150,000'},{label:'Payable over',suf:'months',ph:'e.g. 18'}],o:O(LIKELY)},
+ {id:'17B',p:3,type:'single',t:'Would your employer have your back with time off, tuition help, or both?',o:O(['Yes','Possibly','No','I do not know','Not applicable'])},
 
  // Part 4
- {id:'10C',p:4,type:'multi',max:3,t:'Which fields would you seriously consider?',hint:'Select up to three.',o:O(['Computer Science','Data Science','Cybersecurity','Software Engineering','Computer Engineering','Game Development','Multimedia or Interactive Media','Financial Technology','Robotics or Automation','*Other'])},
- {id:'11C',p:4,type:'single',t:'Before considering total cost, how willing would you be to study physically in Malaysia?',o:O(WILL)},
- {id:'12C',p:4,type:'single',t:'Has your household previously considered funding overseas college study?',o:O(['Yes, with a specific budget','Yes, but no budget has been set','No, but we may consider it','No'])},
- {id:'13C',p:4,type:'single',t:'What is the maximum total annual household budget for tuition and living expenses abroad?',o:O(['Below ₱300,000','₱300,000 to ₱499,999','₱500,000 to ₱699,999','₱700,000 to ₱899,999','₱900,000 to ₱1,199,999','₱1,200,000 or more','Cannot determine without a complete cost estimate'])},
- {id:'14C',p:4,type:'amount',t:'How likely would the student be to apply if the complete annual cost were the amount you enter below?',f:[{label:'Complete annual cost (tuition and living expenses)',pre:'₱',fmt:1,ph:'e.g. 600,000'}],o:O(LIKELY)},
- {id:'15C',p:4,type:'multi',max:3,t:'What are your greatest concerns?',hint:'Select up to three.',o:O(['Total cost','Student visa approval','Personal safety','Accommodation','Distance from family','Recognition of the qualification in the Philippines','Academic readiness','English-language readiness','Employment after graduation','Medical care and insurance','*Other'])},
+ {id:'10C',p:4,type:'multi',max:3,t:'Which fields are you seriously eyeing?',hint:'Pick up to 3.',o:O(['Computer Science','Data Science','Cybersecurity','Software Engineering','Computer Engineering','Game Development','Multimedia or Interactive Media','Financial Technology','Robotics or Automation','*Other'])},
+ {id:'11C',p:4,type:'single',t:'Setting the cost aside, how down are you to study in Malaysia in person?',o:O(WILL)},
+ {id:'12C',p:4,type:'single',t:'Has your family ever thought about funding college abroad?',o:O(['Yes, with a specific budget','Yes, but no budget has been set','No, but we may consider it','No'])},
+ {id:'13C',p:4,type:'single',t:'What’s the most your household could set aside per year for tuition and living expenses abroad?',o:O(['Below ₱300,000','₱300,000 to ₱499,999','₱500,000 to ₱699,999','₱700,000 to ₱899,999','₱900,000 to ₱1,199,999','₱1,200,000 or more','Cannot determine without a complete cost estimate'])},
+ {id:'14C',p:4,type:'amount',t:'Type the full yearly cost you have in mind (tuition plus living expenses). At that amount, how likely would the student apply?',f:[{label:'Complete annual cost (tuition and living expenses)',pre:'₱',fmt:1,ph:'e.g. 600,000'}],o:O(LIKELY)},
+ {id:'15C',p:4,type:'multi',max:3,t:'What worries you the most?',hint:'Pick up to 3.',o:O(['Total cost','Student visa approval','Personal safety','Accommodation','Distance from family','Recognition of the qualification in the Philippines','Academic readiness','English-language readiness','Employment after graduation','Medical care and insurance','*Other'])},
 
  // Part 5
- {id:'10D',p:5,type:'single',t:'Which field would you seriously consider?',o:O(['Business','Digital Transformation or Information Technology','Law','Hospitality Management','Media and Communication','*Other','I am interested in the pathway but unsure of the field'])},
- {id:'11D',p:5,type:'single',t:'Before considering price, how attractive is the two-years-online plus one-year-in-the-UK structure?',o:O(ATTR)},
- {id:'12D',p:5,type:'single',t:'Would the student be willing and able to relocate to the UK for the final year?',o:O(['Definitely yes','Probably yes','Unsure','Probably no','Definitely no'])},
- {id:'13D',p:5,type:'single',t:'What maximum annual tuition and required academic fees could your household sustain during each of the first two online years?',o:O([...FEE5,'Cannot determine without a complete package'])},
- {id:'14D',p:5,type:'single',t:'What maximum total household budget could be made available for the UK final year, including tuition and living costs?',o:O(['Below ₱750,000','₱750,000 to ₱999,999','₱1,000,000 to ₱1,249,999','₱1,250,000 to ₱1,499,999','₱1,500,000 to ₱1,999,999','₱2,000,000 or more','Cannot determine without the UK university and complete cost estimate'])},
- {id:'15D',p:5,type:'amount',t:'How likely would the student be to apply at the costs you enter below?',f:[{label:'Cost per year for each of the first two years',pre:'₱',fmt:1,ph:'e.g. 120,000'},{label:'Estimated all-in UK final-year cost',pre:'₱',fmt:1,ph:'e.g. 1,200,000'}],o:O(LIKELY)},
- {id:'16D',p:5,type:'multi',max:4,t:'Which matters would have to be resolved before you could decide?',hint:'Select up to four.',o:O(['Identity and standing of the UK university','Recognition of the diploma, advanced diploma, and UK degree','Guaranteed or conditional progression to the UK year','Complete tuition and living-cost estimate','Scholarship or financing','Visa prospects','Refund protection if a visa is denied','Student housing and welfare in the UK','Academic and English-language preparation','Career outcomes','*Other'])},
+ {id:'10D',p:5,type:'single',t:'Which field are you seriously considering?',o:O(['Business','Digital Transformation or Information Technology','Law','Hospitality Management','Media and Communication','*Other','I am interested in the pathway but unsure of the field'])},
+ {id:'11D',p:5,type:'single',t:'Price aside, how does 2 years online plus 1 year in the UK sound to you?',o:O(ATTR)},
+ {id:'12D',p:5,type:'single',t:'Would the student be willing and able to move to the UK for the final year?',o:O(['Definitely yes','Probably yes','Unsure','Probably no','Definitely no'])},
+ {id:'13D',p:5,type:'single',t:'What’s the most your household could handle per year during the 2 online years (tuition and required fees)?',o:O([...FEE5,'Cannot determine without a complete package'])},
+ {id:'14D',p:5,type:'single',t:'What total budget could you set aside for the UK final year, including tuition and living costs?',o:O(['Below ₱750,000','₱750,000 to ₱999,999','₱1,000,000 to ₱1,249,999','₱1,250,000 to ₱1,499,999','₱1,500,000 to ₱1,999,999','₱2,000,000 or more','Cannot determine without the UK university and complete cost estimate'])},
+ {id:'15D',p:5,type:'amount',t:'Type the yearly cost for the first 2 years and the all-in UK year cost you have in mind. At those numbers, how likely would the student apply?',f:[{label:'Cost per year for each of the first two years',pre:'₱',fmt:1,ph:'e.g. 120,000'},{label:'Estimated all-in UK final-year cost',pre:'₱',fmt:1,ph:'e.g. 1,200,000'}],o:O(LIKELY)},
+ {id:'16D',p:5,type:'multi',max:4,t:'What needs to be cleared up before you can decide?',hint:'Pick up to 4.',o:O(['Identity and standing of the UK university','Recognition of the diploma, advanced diploma, and UK degree','Guaranteed or conditional progression to the UK year','Complete tuition and living-cost estimate','Scholarship or financing','Visa prospects','Refund protection if a visa is denied','Student housing and welfare in the UK','Academic and English-language preparation','Career outcomes','*Other'])},
 
  // Part 6
- {id:'18',p:6,type:'single',t:'After reviewing the relevant descriptions and costs, which ONE option would you be most likely to pursue?',o:O(['Veritas undergraduate online program through the recruitment model','Veritas undergraduate online program with MVGFC teaching or campus support under the learner model','Veritas online MBA','Veritas online Master of Education','UNIMY face-to-face technology program in Malaysia','BAC Singapore and UK two-plus-one pathway','A Philippine program not connected with BAC','Another international program','I would postpone further study','None'])},
- {id:'19',p:6,type:'multi',max:3,t:'Which THREE factors will most strongly determine the final decision?',hint:'Select up to three.',o:O(['Total cost','Installment terms','Scholarship or financing','Recognition in the Philippines','Institution and program reputation','Field of study','Teaching quality','Convenience and schedule','MVGFC faculty involvement','Access to the MVGFC campus','International mobility or overseas experience','Career and employment outcomes','Student safety and welfare','*Other'])},
- {id:'20',p:6,type:'single',t:'What minimum monthly installment would be manageable without creating serious financial strain?',o:O(['Below ₱5,000','₱5,000 to ₱7,499','₱7,500 to ₱9,999','₱10,000 to ₱14,999','₱15,000 to ₱19,999','₱20,000 or more','Not applicable or cannot determine'])},
- {id:'21',p:6,type:'multi',max:3,t:'Which forms of assistance would most affect your decision?',hint:'Select up to three.',o:O(['Merit scholarship','Need-based scholarship','Early enrollment discount','Family or alumni discount','Monthly installment plan','Employer sponsorship','Education financing or loan','Reduced fee for the first cohort','!No financial assistance needed'])},
- {id:'22',p:6,type:'single',t:'How reliable are the learner’s internet access and device for sustained online study?',o:O(['Reliable internet and suitable personal device','Generally adequate, with occasional limitations','Internet or device access would require improvement','No reliable internet or suitable device at present'])},
- {id:'23',p:6,type:'text',t:'What unanswered question or concern would most affect your decision?'},
- {id:'24',p:6,type:'single',t:'May MVGFC invite you to a separate information session about the program you selected?',o:O(['Yes – open the separate contact form','Maybe – show me more information first','No'])},
+ {id:'18',p:6,type:'single',t:'After everything you’ve seen, which ONE option would you most likely go for?',o:O(['Veritas undergraduate online program through the recruitment model','Veritas undergraduate online program with MVGFC teaching or campus support under the learner model','Veritas online MBA','Veritas online Master of Education','UNIMY face-to-face technology program in Malaysia','BAC Singapore and UK two-plus-one pathway','A Philippine program not connected with BAC','Another international program','I would postpone further study','None'])},
+ {id:'19',p:6,type:'multi',max:3,t:'Which 3 things will make or break your decision?',hint:'Pick up to 3.',o:O(['Total cost','Installment terms','Scholarship or financing','Recognition in the Philippines','Institution and program reputation','Field of study','Teaching quality','Convenience and schedule','MVGFC faculty involvement','Access to the MVGFC campus','International mobility or overseas experience','Career and employment outcomes','Student safety and welfare','*Other'])},
+ {id:'20',p:6,type:'single',t:'What monthly installment would feel manageable without straining your budget?',o:O(['Below ₱5,000','₱5,000 to ₱7,499','₱7,500 to ₱9,999','₱10,000 to ₱14,999','₱15,000 to ₱19,999','₱20,000 or more','Not applicable or cannot determine'])},
+ {id:'21',p:6,type:'multi',max:3,t:'Which kind of help would sway your decision the most?',hint:'Pick up to 3.',o:O(['Merit scholarship','Need-based scholarship','Early enrollment discount','Family or alumni discount','Monthly installment plan','Employer sponsorship','Education financing or loan','Reduced fee for the first cohort','!No financial assistance needed'])},
+ {id:'22',p:6,type:'single',t:'How solid is the learner’s internet and device for online study?',o:O(['Reliable internet and suitable personal device','Generally adequate, with occasional limitations','Internet or device access would require improvement','No reliable internet or suitable device at present'])},
+ {id:'23',p:6,type:'text',t:'What’s the one question or worry that’s still on your mind?',ph:'Tell us anything. We’re listening 💬 (optional)'},
+ {id:'24',p:6,type:'single',t:'Want us to invite you to a separate info session about the program you picked?',o:O(['Yes – open the separate contact form','Maybe – show me more information first','No'])},
 
  // Part 7
- {id:'25',p:7,type:'single',t:'What is the main reason none of the options is suitable?',o:O(['The programs do not match my interests','I prefer a Philippine institution','The expected cost is too high','I do not want online study','I do not want to study abroad','I am not ready to enroll','I am concerned about recognition or accreditation','I need more information','*Other'])},
- {id:'26',p:7,type:'text',t:'What program, delivery arrangement, or price would make an MVGFC international partnership more relevant to you?'}
+ {id:'25',p:7,type:'single',t:'What’s the main reason none of these fit?',o:O(['The programs do not match my interests','I prefer a Philippine institution','The expected cost is too high','I do not want online study','I do not want to study abroad','I am not ready to enroll','I am concerned about recognition or accreditation','I need more information','*Other'])},
+ {id:'26',p:7,type:'text',t:'What would make an MVGFC international program worth a second look? Think program, setup, or price.',ph:'Tell us what would change your mind (optional)'}
 ].map(q=>({label:q.id,...q}));
 const QM=Object.fromEntries(QS.map(q=>[q.id,q]));
-const cheers=['Great pick! ✨','Noted! 📝','Smooth flying! 🛫','You’re doing great! 💚','Love it! 🌟','On course! 🧭'];
+const cheers=['Nice one! ✨','Got it! 📝','Love that for you 💚','Solid pick! 🌟','On it! 🧭','Noted, thank you! 🙌'];
 
 /* ========= STATE ========= */
 let S=JSON.parse(localStorage.getItem(LS_KEY)||'null')||{i:0,a:{},parental:false,start:Date.now()};
@@ -328,7 +342,7 @@ function progress(){
   $('fill').style.width=pct+'%';$('plane').style.left=pct+'%';
   const c=cur(),qs=steps.filter(s=>s.t==='q');
   if(c.t==='q'){$('count').textContent=`Question ${qs.indexOf(c)+1} of ${qs.length}`}
-  else $('count').textContent=c.t==='thanks'?'Arrived! 🎉':'';
+  else $('count').textContent=c.t==='thanks'?'You made it! 🎉':'';
 }
 function go(d){steps=buildSteps();S.i=Math.max(0,Math.min(steps.length-1,S.i+d));save();render(d)}
 function render(d=1){
@@ -339,42 +353,42 @@ function render(d=1){
   progress();
   const back=`<button class="btn ghost" onclick="go(-1)">← Back</button>`;
   if(s.t==='welcome'){
-    st.innerHTML=`<div class="center"><div class="big">🌏</div><span class="chip">International Programs Market Feasibility Survey</span>
-    <h2>Your Journey to a Global Education Starts Here</h2>
-    <p class="lead">Manuel V. Gallego Foundation Colleges, Inc. is studying a possible partnership with <b>BAC Education Group</b>. The proposed offerings differ in delivery, location, cost, and the role of MVGFC. Your answers help determine which offerings are relevant, accessible, and affordable for Cabanatuan City, Nueva Ecija, and Central Luzon.</p>
-    <p class="lead">Estimated completion time: <b>8 to 12 minutes</b>. Questions are routed according to your profile and the programs you choose. ✈️</p>
-    <div class="note">Please answer only on the basis of the program descriptions shown. Programs, fees, schedules, admissions requirements, regulatory approvals, and partnership arrangements remain subject to confirmation. Completing this survey is not an application and does not guarantee that a program will be offered.</div>
-    <button class="btn primary" onclick="go(1)">Start my journey 🚀</button></div>`;
+    st.innerHTML=`<div class="center"><div class="big">🌏</div><span class="chip">Your International Education Guide</span>
+    <h2>Let’s find the international path that fits you 👋</h2>
+    <p class="lead">Hi! We’re the international education team of <b>Manuel V. Gallego Foundation Colleges, Inc. (MVGFC)</b>. We’re exploring a partnership with <b>BAC Education Group (Brickfields Asia College)</b>, with options from <b>Veritas University College</b>, <b>UNIMY (University Malaysia of Computer Science and Engineering)</b>, and a <b>BAC Singapore to UK</b> pathway.</p>
+    <p class="lead">Think of this as a quick one-on-one with your education consultant. Tell us what you’re looking for, what works for your budget, and what worries you, so we can shape options that actually fit. Your answers will help determine which programs make sense for students and professionals across the Philippines. It takes about <b>8 to 12 minutes</b>, and we’ll only ask about the programs you pick. ✈️</p>
+    <div class="note">Quick heads-up: please answer based on the program descriptions we show you. Programs, fees, schedules, admissions requirements, regulatory approvals, and partnership arrangements are still subject to confirmation. This survey is not an application and doesn’t guarantee that a program will be offered.</div>
+    <button class="btn primary" onclick="go(1)">Let’s go 🚀</button></div>`;
   }else if(s.t==='ended'){
-    st.innerHTML=`<div class="center"><div class="big">🙏</div><h2>Thank you for your time</h2>
-    <p class="lead">Since you chose not to participate, the survey has ended and nothing was recorded. If you change your mind, you may go back and update your consent.</p>
+    st.innerHTML=`<div class="center"><div class="big">🙏</div><h2>No worries, thanks for stopping by!</h2>
+    <p class="lead">Since you chose not to join, the survey has ended and nothing was recorded. Changed your mind? Go back anytime and update your answer.</p>
     <div class="nav" style="justify-content:center">${back}</div></div>`;
   }else if(s.t==='parental'){
     st.innerHTML=`<span class="chip">👨‍👩‍👧 Parental Consent and Student Assent</span>
-    <h2>Respondents below 18</h2>
-    <p class="lead">A respondent below 18 may proceed only under an MVGFC-approved parental consent and student assent procedure. Please confirm below. If this cannot be confirmed, please stop here and invite a parent or guardian to respond instead.</p>
+    <h2>Quick check for respondents below 18</h2>
+    <p class="lead">Respondents below 18 can continue only with an MVGFC-approved parental consent and student assent. Please confirm below. If you can’t, please pause here and ask a parent or guardian to answer instead.</p>
     <label class="check"><input type="checkbox" id="pc" ${S.parental?'checked':''}><span>I confirm that a parent or guardian has given consent for this student to take part, and that the student agrees to participate, in line with the MVGFC procedure.</span></label>
-    <div class="nav">${back}<button class="btn primary" id="nx" ${S.parental?'':'disabled'} onclick="go(1)">Confirm and continue →</button></div>`;
+    <div class="nav">${back}<button class="btn primary" id="nx" ${S.parental?'':'disabled'} onclick="go(1)">Confirmed, continue →</button></div>`;
     $('pc').onchange=e=>{S.parental=e.target.checked;$('nx').disabled=!S.parental;save()};
   }else if(s.t==='intro'){
-    const P=parts[s.p];
-    st.innerHTML=`<div class="center"><div class="big">${P.emoji}</div><span class="chip">${P.tag} · Stop</span>
-    <h2>${P.title}</h2><p class="lead">${P.blurb}</p>
+    const P=parts[s.p],bl=typeof P.blurb==='function'?P.blurb():P.blurb;
+    st.innerHTML=`<div class="center"><div class="big">${P.emoji}</div><span class="chip">${P.tag}</span>
+    <h2>${P.title}</h2><p class="lead">${esc(bl)}</p>
     <div class="nav" style="justify-content:center">${back}<button class="btn primary" onclick="go(1)">Continue →</button></div></div>`;
   }else if(s.t==='info'){
     const P=parts[s.p],M=MOD[s.p];
     st.innerHTML=`<div class="center"><div class="big" style="font-size:56px">${P.emoji}</div><span class="chip">${P.tag}</span><h2>${P.title}</h2></div>
-    <p class="hint" style="margin-top:10px">Program description</p>
+    <p class="hint" style="margin-top:10px">Here’s the quick rundown 👇 Give it a read, then we’ll ask what you think.</p>
     ${M.desc.map(x=>`<p class="lead">${esc(x)}</p>`).join('')}
     <table class="spec-table">${M.rows.map(r=>`<tr><td>${esc(r[0])}</td><td>${esc(r[1])}</td></tr>`).join('')}</table>
-    <div class="nav">${back}<button class="btn primary" onclick="go(1)">I’ve read this · Continue →</button></div>`;
+    <div class="nav">${back}<button class="btn primary" onclick="go(1)">Got it · Next →</button></div>`;
   }else if(s.t==='q'){
     renderQ(s.q,back);
   }else if(s.t==='thanks'){
     const link=wantsContact&&CONTACT_FORM_URL?`<p style="margin-bottom:14px"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(CONTACT_FORM_URL)}" target="_blank" rel="noopener">Open the info-session contact form →</a></p>`:'';
-    st.innerHTML=`<div class="center"><div class="big">🎉</div><span class="chip">Thank you!</span>
-    <h2>Thank you for your valuable participation!</h2>
-    <p class="lead">Your responses were recorded and will help MVGFC plan its international program offerings. Salamat po! 💚</p>
+    st.innerHTML=`<div class="center"><div class="big">🎉</div><span class="chip">You’re all set!</span>
+    <h2>Thank you for sharing your thoughts!</h2>
+    <p class="lead">Your answers were recorded and will help MVGFC decide which international programs to bring in. Salamat po! 💚</p>
     ${link}<button class="btn gold" onclick="restart()">Submit another response</button></div>`;
     burst();
   }
@@ -389,9 +403,9 @@ function renderQ(q,back){
   let h=`<span class="chip">${chip}</span>`;
   if(q.privacy){
     h+=`<ul class="privacy">
-     <li><b>Purpose:</b> Responses will be used for feasibility analysis, institutional planning, and possible program development.</li>
-     <li><b>Confidentiality:</b> Results will be analyzed in aggregate. No individual respondent will be identified.</li>
-     <li><b>Voluntary:</b> Participation is voluntary. You may skip a question or stop at any time.</li>
+     <li><b>Why we ask:</b> Your responses are used for feasibility analysis, institutional planning, and possible program development.</li>
+     <li><b>Your identity:</b> Results are analyzed as a group. No individual respondent will be identified.</li>
+     <li><b>Your call:</b> Participation is voluntary. You can skip any question or stop anytime.</li>
      <li><b>Contact details:</b> If you want future updates, your contact information is collected in a separate follow-up form and is not linked to this response file unless you expressly consent.</li>
      <li><b>Data Privacy Act of 2012 (RA 10173):</b> Your data is kept securely by the authorized MVGFC office, retained only as long as necessary, then properly disposed of.</li></ul>`;
   }
@@ -400,16 +414,20 @@ function renderQ(q,back){
   if(q.type==='single'||q.type==='multi'||q.type==='amount'){
     if(q.type==='amount'){
       h+=q.f.map((f,j)=>`<label class="amt">${esc(f.label)}<div class="amt-row">${f.pre?`<b>${f.pre}</b>`:''}<input inputmode="numeric" data-j="${j}" placeholder="${esc(f.ph||'')}" value="${esc(fmtVal(f,a.vals[j]||''))}">${f.suf?`<b style="font-size:14px">${f.suf}</b>`:''}</div></label>`).join('');
-      h+=`<p class="sub">Your likelihood to apply</p>`;
+      h+=`<p class="sub">How likely would you apply?</p>`;
     }
     const long=q.o.some(o=>o[0].length>46);
     h+=`<div class="options ${long?'one':''}" role="${q.type==='multi'?'group':'radiogroup'}">${q.o.map((o,k)=>`<button class="opt ${q.type==='multi'?'multi':''} ${a.sel.includes(k)?'sel':''}" data-k="${k}"><span class="ind">✓</span><span class="tx">${esc(o[0])}</span>${k<9?`<kbd>${k+1}</kbd>`:''}</button>`).join('')}</div>
     <div id="specbox"></div>`;
+  }else if(q.type==='select'){
+    let idx=0;
+    h+=`<select class="spec" id="sl"><option value="">Choose your region…</option>${q.groups.map(g=>`<optgroup label="${esc(g[0])}">${g[1].map(r=>{const k=idx++;return `<option value="${k}" ${a.sel[0]===k?'selected':''}>${esc(r)}</option>`}).join('')}</optgroup>`).join('')}</select>`;
+    if(q.extra)h+=`<input class="spec" id="sx" style="margin-top:12px" placeholder="${esc(q.extra.label)} – ${esc(q.extra.ph)}" value="${esc(a.text||'')}">`;
   }else if(q.type==='text'){
-    h+=`<textarea class="spec" id="ta" placeholder="Type your answer here (optional)…">${esc(a.text||'')}</textarea>`;
+    h+=`<textarea class="spec" id="ta" placeholder="${esc(q.ph||'Type your answer here (optional)…')}">${esc(a.text||'')}</textarea>`;
   }
   h+=`<div class="cheer" id="cheer"></div>
-  <div class="nav">${back}${(!q.req&&q.type!=='text')?`<button class="skip" onclick="skipQ()">Skip this question</button>`:'<span></span>'}<button class="btn primary" id="nx" onclick="next()">${last?'Submit 🛬':'Next →'}</button></div>`;
+  <div class="nav">${back}${(!q.req&&q.type!=='text')?`<button class="skip" onclick="skipQ()">Skip this one</button>`:'<span></span>'}<button class="btn primary" id="nx" onclick="next()">${last?'Submit 🛬':'Next →'}</button></div>`;
   st.innerHTML=h;
   st.querySelectorAll('.opt').forEach(b=>b.onclick=()=>pick(+b.dataset.k));
   st.querySelectorAll('.amt input').forEach(inp=>inp.oninput=e=>{
@@ -418,6 +436,11 @@ function renderQ(q,back){
     aa.vals[+e.target.dataset.j]=raw;e.target.value=fmtVal(f,raw);save();validate();
   });
   const ta=$('ta');if(ta)ta.oninput=e=>{ans(q).text=e.target.value;save()};
+  const sl=$('sl');if(sl)sl.onchange=e=>{
+    const aa=ans(q);aa.sel=e.target.value===''?[]:[+e.target.value];save();validate();
+    if(aa.sel.length)$('cheer').textContent=cheers[Math.floor(Math.random()*cheers.length)];
+  };
+  const sx=$('sx');if(sx)sx.oninput=e=>{ans(q).text=e.target.value;save()};
   showSpec();validate();
 }
 const fmtVal=(f,v)=>f.fmt&&v?Number(v).toLocaleString('en-US'):v;
@@ -430,7 +453,7 @@ function pick(k){
     else if(o[1]===2)a.sel=[k];
     else{
       a.sel=a.sel.filter(x=>q.o[x][1]!==2);
-      if(q.max&&a.sel.length>=q.max){$('cheer').textContent=`You can select up to ${q.max} only.`;return}
+      if(q.max&&a.sel.length>=q.max){$('cheer').textContent=`Max of ${q.max} only, so unselect one first 😉`;return}
       a.sel.push(k);
     }
   }else a.sel=[k];
@@ -444,7 +467,7 @@ function showSpec(focusK){
   const q=cur().q,a=S.a[q.id],box=$('specbox');if(!box)return;
   if(!a){box.innerHTML='';return}
   const ks=a.sel.filter(k=>q.o[k][1]===1);
-  box.innerHTML=ks.map(k=>`<input class="spec" data-k="${k}" placeholder="Please specify (${esc(q.o[k][0])})…" value="${esc(a.spec[k]||'')}">`).join('');
+  box.innerHTML=ks.map(k=>`<input class="spec" data-k="${k}" placeholder="Tell us more (${esc(q.o[k][0])})…" value="${esc(a.spec[k]||'')}">`).join('');
   box.querySelectorAll('input').forEach(inp=>{
     inp.oninput=e=>{a.spec[+e.target.dataset.k]=e.target.value;save();validate()};
     if(focusK!=null&&+inp.dataset.k===focusK)inp.focus();
@@ -465,8 +488,9 @@ function next(){
   if(steps[S.i+1]&&steps[S.i+1].t==='thanks')submit();else go(1);
 }
 document.addEventListener('keydown',e=>{
-  const s=cur();if(!s||s.t!=='q'||['INPUT','TEXTAREA'].includes(e.target.tagName))return;
-  if(s.q.type!=='text'&&/^[1-9]$/.test(e.key)&&s.q.o&&s.q.o[+e.key-1])pick(+e.key-1);
+  const s=cur();if(!s||s.t!=='q'||['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
+  const ty=s.q.type;
+  if((ty==='single'||ty==='multi'||ty==='amount')&&/^[1-9]$/.test(e.key)&&s.q.o&&s.q.o[+e.key-1])pick(+e.key-1);
   if(e.key==='Enter')next();
 });
 
@@ -486,6 +510,7 @@ function payload(){
     if(q.type==='text'){if((a.text||'').trim())d['q_'+q.id]=a.text.trim();return}
     if(!a.sel.length)return;
     d['q_'+q.id]=valText(q,a);
+    if(q.type==='select'&&(a.text||'').trim())d['q_'+q.id+'_1']=a.text.trim();
     if(q.type==='amount')q.f.forEach((f,j)=>{if(a.vals[j])d['q_'+q.id+'_'+(j+1)]=a.vals[j]});
   });
   return d;
@@ -501,7 +526,6 @@ async function submit(){
     const qd=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]');qd.push(p);localStorage.setItem(QUEUE_KEY,JSON.stringify(qd));
   }
   S.a={};S.parental=false;localStorage.removeItem(LS_KEY);
-  steps=[...steps];S.i=steps.length-1;
   steps=[{t:'thanks'}];S.i=0;render(1);
 }
 async function flushQueue(){
