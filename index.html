@@ -139,7 +139,7 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 <header>
   <div class="brand">
     <div class="logo-slot"><img src="assets/mvgfclogo.png" alt="MVGFC" onerror="this.replaceWith('MVGFC LOGO')"></div>
-    <div><h1>Manuel V. Gallego Foundation Colleges, Inc.<br><small>[Alagang Kalidad, Alagang Gallegan]</small></h1></div>
+    <div><h1>Manuel V. Gallego Foundation Colleges, Inc.<br><small>Alagang Kalidad, Alagang Gallegan</small></h1></div>
   </div>
   <div class="logo-slot"><img src="assets/bace-white.png" alt="BAC" onerror="this.replaceWith('BAC LOGO')"></div>
 </header>
@@ -150,7 +150,7 @@ canvas#confetti{position:fixed;inset:0;pointer-events:none;z-index:10}
 </div>
 
 <main><section class="stage" id="stage"></section></main>
-<footer>© MVGFC · [Your office name placeholder] · Data Privacy Act of 2012 (RA 10173)</footer>
+<footer>© MVGFC · Alagang Kalidad Alagang Gallegan · Data Privacy Act of 2012 (RA 10173)</footer>
 <canvas id="confetti"></canvas>
 
 <script>
@@ -303,7 +303,8 @@ const QM=Object.fromEntries(QS.map(q=>[q.id,q]));
 const cheers=['Nice one! ✨','Got it! 📝','Love that for you 💚','Solid pick! 🌟','On it! 🧭','Noted, thank you! 🙌'];
 
 /* ========= STATE ========= */
-let S=JSON.parse(localStorage.getItem(LS_KEY)||'null')||{i:0,a:{},parental:false,start:Date.now()};
+let S=JSON.parse(localStorage.getItem(LS_KEY)||'null')||{i:0,a:{},parental:false,contact:{},start:Date.now()};
+if(!S.contact)S.contact={};
 let steps=[];
 let wantsContact=false;
 const $=id=>document.getElementById(id);
@@ -322,6 +323,7 @@ function buildSteps(){
   if(sel('C1')[0]===1){st.push({t:'ended'});return st}
   st.push({t:'q',q:QM.C2});
   if(sel('C2')[0]===1)st.push({t:'parental'});
+  st.push({t:'contact'});
   st.push({t:'intro',p:1});
   QS.filter(q=>q.p===1).forEach(q=>st.push({t:'q',q}));
   const ms=modules();
@@ -370,6 +372,26 @@ function render(d=1){
     <label class="check"><input type="checkbox" id="pc" ${S.parental?'checked':''}><span>I confirm that a parent or guardian has given consent for this student to take part, and that the student agrees to participate, in line with the MVGFC procedure.</span></label>
     <div class="nav">${back}<button class="btn primary" id="nx" ${S.parental?'':'disabled'} onclick="go(1)">Confirmed, continue →</button></div>`;
     $('pc').onchange=e=>{S.parental=e.target.checked;$('nx').disabled=!S.parental;save()};
+  }else if(s.t==='contact'){
+    const c=S.contact||(S.contact={});
+    const regionOpts='<option value="">Region (optional)</option>'+REGION_GROUPS.map(g=>
+      `<optgroup label="${esc(g[0])}">${g[1].map(r=>`<option value="${esc(r)}" ${c.region===r?'selected':''}>${esc(r)}</option>`).join('')}</optgroup>`).join('');
+    st.innerHTML=`<span class="chip">💌 Stay in the loop · Optional</span>
+    <h2>Want us to keep in touch?</h2>
+    <p class="lead">Share your details if you’d like updates or an invite to an info session about these programs. This is completely optional, and you can skip it and still take the survey.</p>
+    <input class="spec" id="cn" style="margin-top:8px" placeholder="Full name" autocomplete="name" value="${esc(c.name||'')}">
+    <input class="spec" id="ce" type="email" style="margin-top:12px" placeholder="Email address" autocomplete="email" value="${esc(c.email||'')}">
+    <input class="spec" id="cp" type="tel" style="margin-top:12px" placeholder="Mobile number (e.g. 0917 123 4567)" autocomplete="tel" value="${esc(c.phone||'')}">
+    <select class="spec" id="cr" style="margin-top:12px">${regionOpts}</select>
+    <label class="check" style="margin-top:16px"><input type="checkbox" id="cc" ${c.consent?'checked':''}><span>I agree that MVGFC may save these details with my survey response and contact me about these international programs. I understand I can ask for my details to be removed anytime.</span></label>
+    <div class="cheer" id="cheer"></div>
+    <div class="nav">${back}<button class="skip" onclick="skipContact()">Skip this</button><button class="btn primary" id="nx" onclick="go(1)">Next →</button></div>`;
+    const upd=()=>{
+      c.name=$('cn').value;c.email=$('ce').value;c.phone=$('cp').value;c.region=$('cr').value;c.consent=$('cc').checked;
+      save();validateContact();
+    };
+    ['cn','ce','cp','cr','cc'].forEach(id=>$(id).addEventListener(id==='cr'||id==='cc'?'change':'input',upd));
+    validateContact();
   }else if(s.t==='intro'){
     const P=parts[s.p],bl=typeof P.blurb==='function'?P.blurb():P.blurb;
     st.innerHTML=`<div class="center"><div class="big">${P.emoji}</div><span class="chip">${P.tag}</span>
@@ -406,7 +428,7 @@ function renderQ(q,back){
      <li><b>Why we ask:</b> Your responses are used for feasibility analysis, institutional planning, and possible program development.</li>
      <li><b>Your identity:</b> Results are analyzed as a group. No individual respondent will be identified.</li>
      <li><b>Your call:</b> Participation is voluntary. You can skip any question or stop anytime.</li>
-     <li><b>Contact details:</b> If you want future updates, your contact information is collected in a separate follow-up form and is not linked to this response file unless you expressly consent.</li>
+     <li><b>Contact details:</b> Sharing your contact information is optional. If you choose to share it, it is saved with your response only with your explicit consent, and used only for updates and invitations about these programs.</li>
      <li><b>Data Privacy Act of 2012 (RA 10173):</b> Your data is kept securely by the authorized MVGFC office, retained only as long as necessary, then properly disposed of.</li></ul>`;
   }
   h+=`<h2>${esc(q.label)}. ${esc(q.t)}</h2>`;
@@ -487,6 +509,24 @@ function next(){
   steps=buildSteps();
   if(steps[S.i+1]&&steps[S.i+1].t==='thanks')submit();else go(1);
 }
+
+/* ========= OPTIONAL CONTACT STEP ========= */
+function contactValid(){
+  const c=S.contact||{};
+  const any=[c.name,c.email,c.phone,c.region].some(v=>(v||'').trim());
+  if(!any)return {ok:true,msg:''};
+  if(c.email&&c.email.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email.trim()))return {ok:false,msg:'That email looks off. Please check it 😊'};
+  if(c.phone&&c.phone.trim()&&c.phone.replace(/\D/g,'').length<7)return {ok:false,msg:'That number looks too short. Please check it 😊'};
+  if(!c.consent)return {ok:false,msg:'Please tick the consent box to share your details, or tap “Skip this”.'};
+  return {ok:true,msg:''};
+}
+function validateContact(){
+  const r=contactValid(),b=$('nx'),ch=$('cheer');
+  if(b)b.disabled=!r.ok;
+  if(ch)ch.textContent=r.msg;
+}
+function skipContact(){S.contact={};save();go(1)}
+
 document.addEventListener('keydown',e=>{
   const s=cur();if(!s||s.t!=='q'||['INPUT','TEXTAREA','SELECT'].includes(e.target.tagName))return;
   const ty=s.q.type;
@@ -513,6 +553,14 @@ function payload(){
     if(q.type==='select'&&(a.text||'').trim())d['q_'+q.id+'_1']=a.text.trim();
     if(q.type==='amount')q.f.forEach((f,j)=>{if(a.vals[j])d['q_'+q.id+'_'+(j+1)]=a.vals[j]});
   });
+  const c=S.contact||{};
+  if(c.consent&&[c.name,c.email,c.phone,c.region].some(v=>(v||'').trim())){
+    if((c.name||'').trim())d.contact_name=c.name.trim();
+    if((c.email||'').trim())d.contact_email=c.email.trim();
+    if((c.phone||'').trim())d.contact_phone=c.phone.trim();
+    if(c.region)d.contact_region=c.region;
+    d.contact_consent='Yes';
+  }
   return d;
 }
 async function send(p){
@@ -525,7 +573,7 @@ async function submit(){
   try{await send(p)}catch(e){
     const qd=JSON.parse(localStorage.getItem(QUEUE_KEY)||'[]');qd.push(p);localStorage.setItem(QUEUE_KEY,JSON.stringify(qd));
   }
-  S.a={};S.parental=false;localStorage.removeItem(LS_KEY);
+  S.a={};S.parental=false;S.contact={};localStorage.removeItem(LS_KEY);
   steps=[{t:'thanks'}];S.i=0;render(1);
 }
 async function flushQueue(){
@@ -534,7 +582,7 @@ async function flushQueue(){
   localStorage.setItem(QUEUE_KEY,JSON.stringify(left));
 }
 window.addEventListener('online',flushQueue);flushQueue();
-function restart(){S={i:0,a:{},parental:false,start:Date.now()};wantsContact=false;save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
+function restart(){S={i:0,a:{},parental:false,contact:{},start:Date.now()};wantsContact=false;save();SURVEY_SOURCE='';selectedSource='';sessionStorage.removeItem(SOURCE_STORAGE_KEY);showSourceLanding();render(-1)}
 
 /* ========= CONFETTI ========= */
 function burst(){
