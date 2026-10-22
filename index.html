@@ -382,15 +382,16 @@ function render(d=1){
     <input class="spec" id="cn" style="margin-top:8px" placeholder="Full name" autocomplete="name" value="${esc(c.name||'')}">
     <input class="spec" id="ce" type="email" style="margin-top:12px" placeholder="Email address" autocomplete="email" value="${esc(c.email||'')}">
     <input class="spec" id="cp" type="tel" style="margin-top:12px" placeholder="Mobile number (e.g. 0917 123 4567)" autocomplete="tel" value="${esc(c.phone||'')}">
+    <input class="spec" id="cl" type="text" inputmode="url" style="margin-top:12px" placeholder="LinkedIn profile link (auto generated)" autocomplete="url" value="${esc(c.linkedin||'')}">
     <select class="spec" id="cr" style="margin-top:12px">${regionOpts}</select>
     <label class="check" style="margin-top:16px"><input type="checkbox" id="cc" ${c.consent?'checked':''}><span>I agree that MVGFC may save these details with my survey response and contact me about these international programs. I understand I can ask for my details to be removed anytime.</span></label>
     <div class="cheer" id="cheer"></div>
     <div class="nav">${back}<button class="skip" onclick="skipContact()">Skip this</button><button class="btn primary" id="nx" onclick="go(1)">Next →</button></div>`;
     const upd=()=>{
-      c.name=$('cn').value;c.email=$('ce').value;c.phone=$('cp').value;c.region=$('cr').value;c.consent=$('cc').checked;
+      c.name=$('cn').value;c.email=$('ce').value;c.phone=$('cp').value;c.linkedin=$('cl').value;c.region=$('cr').value;c.consent=$('cc').checked;
       save();validateContact();
     };
-    ['cn','ce','cp','cr','cc'].forEach(id=>$(id).addEventListener(id==='cr'||id==='cc'?'change':'input',upd));
+    ['cn','ce','cp','cl','cr','cc'].forEach(id=>$(id).addEventListener(id==='cr'||id==='cc'?'change':'input',upd));
     validateContact();
   }else if(s.t==='intro'){
     const P=parts[s.p],bl=typeof P.blurb==='function'?P.blurb():P.blurb;
@@ -513,10 +514,11 @@ function next(){
 /* ========= OPTIONAL CONTACT STEP ========= */
 function contactValid(){
   const c=S.contact||{};
-  const any=[c.name,c.email,c.phone,c.region].some(v=>(v||'').trim());
+  const any=[c.name,c.email,c.phone,c.linkedin,c.region].some(v=>(v||'').trim());
   if(!any)return {ok:true,msg:''};
   if(c.email&&c.email.trim()&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(c.email.trim()))return {ok:false,msg:'That email looks off. Please check it 😊'};
   if(c.phone&&c.phone.trim()&&c.phone.replace(/\D/g,'').length<7)return {ok:false,msg:'That number looks too short. Please check it 😊'};
+  if(c.linkedin&&c.linkedin.trim()&&!/(linkedin\.com|lnkd\.in)\//i.test(c.linkedin.trim()))return {ok:false,msg:'Please paste a valid LinkedIn link (linkedin.com/in/...) 😊'};
   if(!c.consent)return {ok:false,msg:'Please tick the consent box to share your details, or tap “Skip this”.'};
   return {ok:true,msg:''};
 }
@@ -554,10 +556,14 @@ function payload(){
     if(q.type==='amount')q.f.forEach((f,j)=>{if(a.vals[j])d['q_'+q.id+'_'+(j+1)]=a.vals[j]});
   });
   const c=S.contact||{};
-  if(c.consent&&[c.name,c.email,c.phone,c.region].some(v=>(v||'').trim())){
+  if(c.consent&&[c.name,c.email,c.phone,c.linkedin,c.region].some(v=>(v||'').trim())){
     if((c.name||'').trim())d.contact_name=c.name.trim();
     if((c.email||'').trim())d.contact_email=c.email.trim();
     if((c.phone||'').trim())d.contact_phone=c.phone.trim();
+    if((c.linkedin||'').trim()){
+      const l=c.linkedin.trim();
+      d.contact_linkedin=/^https?:\/\//i.test(l)?l:'https://'+l;
+    }
     if(c.region)d.contact_region=c.region;
     d.contact_consent='Yes';
   }
